@@ -1,0 +1,89 @@
+import mongoose from "mongoose";
+import crypto from "crypto";
+import { EVENT_STATUS } from "./enum.js";
+
+const eventSchema = new mongoose.Schema(
+  {
+    organizer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    title: {
+      type: String,
+      required: [true, "Event title is required"],
+      trim: true,
+    },
+    description: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    coverImage: {
+      type: String, // either URL or file path
+      default: null,
+    },
+    date: {
+      type: Date,
+      required: [true, "Event date is required"],
+    },
+    location: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    capacity: {
+      type: Number,
+      required: [true, "Capacity is required"],
+      min: [1, "Capacity must be at least 1"],
+    },
+    status: {
+      type: String,
+      enum: Object.values(EVENT_STATUS),
+      default: EVENT_STATUS.DRAFT,
+    },
+    inviteCode: {
+      type: String,
+      unique: true,
+      sparse: true, // ignore unique rule if null
+    },
+    inviteLinkActive: {
+      type: Boolean,
+      default: false,
+    },
+    checkInActive: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  {
+    timestamps: true,
+    toJSON: { virtuals: true }, // we have calculated variables below, they need this
+    toObject: { virtuals: true }, // same, virtual values are not stored but calculated on fly
+  },
+);
+
+// Number of confirmed RSVPs
+eventSchema.virtual("rsvps", {
+  ref: "RSVP",
+  localField: "_id",
+  foreignField: "event",
+});
+
+// Generate unique invite code
+eventSchema.methods.generateInviteCode = function () {
+  this.inviteCode = crypto.randomBytes(8).toString("hex");
+  this.inviteLinkActive = true;
+  return this.inviteCode;
+};
+
+// Stop invite link
+eventSchema.methods.revokeInviteLink = function () {
+  this.inviteLinkActive = false;
+};
+
+eventSchema.index({ organizer: 1, date: -1 });
+eventSchema.index({ status: 1 });
+eventSchema.index({ title: "text", description: "text" });
+
+export default mongoose.model("Event", eventSchema);
