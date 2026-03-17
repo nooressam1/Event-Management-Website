@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { RSVP_STATUS } from "./enum.js";
+import { nanoid } from "nanoid";
 const plusOneSchema = new mongoose.Schema(
   {
     name: {
@@ -17,7 +18,7 @@ const plusOneSchema = new mongoose.Schema(
 
 const rsvpSchema = new mongoose.Schema(
   {
-    event: {
+    eventId: {
       type: mongoose.Schema.Types.ObjectId, //24 hexadecimal string ID, Primary key
       ref: "Event", //this belongs to a collection named 'Event', used in populate(), we can get all organizer events that way
       required: true,
@@ -32,6 +33,12 @@ const rsvpSchema = new mongoose.Schema(
       required: [true, "Guest email name is required"],
       lowercase: true,
       trim: true,
+    },
+    accessCode: {
+      type: String,
+      required: true,
+      unique: true,
+      default: () => nanoid(10),
     },
     status: {
       type: String,
@@ -80,17 +87,6 @@ const rsvpSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
-
-// clear RSVP is plusOne is false (safety measure)
-rsvpSchema.pre("save", async function () {
-  if (this.plusOne && !this.plusOne.hasPlusOne) {
-    this.plusOne = {
-      hasPlusOne: false,
-      name: "",
-      dietaryNotes: "",
-    };
-  }
-});
 
 // adds rule: One RSVP per guest email per event
 rsvpSchema.index({ event: 1, guestEmail: 1 }, { unique: true });

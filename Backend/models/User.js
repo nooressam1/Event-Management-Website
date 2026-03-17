@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required"],
       minlength: 6,
     },
+    profileImage: {
+      type: String, // either URL or file path
+      default: null,
+    },
   },
   { timestamps: true }, //auto-adds createdAt-UpdatedAt
 );
