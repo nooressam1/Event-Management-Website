@@ -1,29 +1,29 @@
 export const BCRYPT_ROUNDS = 12;
 
 const EVENT_STATUS = {
-  DRAFT: "draft",
-  PUBLISHED: "published",
-  COMPLETED: "completed",
-  CANCELLED: "cancelled",
+  DRAFT: "DRAFT",
+  PUBLISHED: "PUBLISHED",
+  COMPLETED: "COMPLETED",
+  CANCELLED: "CANCELLED",
 };
 
 const RSVP_STATUS = {
-  ATTENDING: "attending",
-  DECLINED: "declined",
-  WAITLISTED: "waitlisted",
+  ATTENDING: "ATTENDING",
+  DECLINED: "DECLINED",
+  WAITLISTED: "WAITLISTED",
 };
 
 const EMAIL_TYPE = {
-  INVITE: "invite",
-  REMINDER: "reminder",
-  CONFIRMATION: "confirmation",
-  THANK_YOU: "thankYou",
+  INVITE: "INVITE",
+  REMINDER: "REMINDER",
+  CONFIRMATION: "CONFIRMATION",
+  THANK_YOU: "THANKYOU",
 };
 
 const EMAIL_STATUS = {
-  PENDING: "pending",
-  SENT: "sent",
-  FAILED: "failed",
+  PENDING: "PENDING",
+  SENT: "SENT",
+  FAILED: "FAILED",
 };
 
 export { EVENT_STATUS, RSVP_STATUS, EMAIL_TYPE, EMAIL_STATUS };
