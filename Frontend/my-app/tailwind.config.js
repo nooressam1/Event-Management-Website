@@ -19,6 +19,7 @@ export default {
         OffRed: "#FB7185",
         OffRedbackground: "#211423",
         OffRedLine: "#602135",
+        MainOffWhiteText: "#64748B",
       },
       fontFamily: {
         inter: ["Inter", "sans-serif"],
