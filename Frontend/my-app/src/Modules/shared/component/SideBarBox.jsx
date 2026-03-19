@@ -2,11 +2,11 @@ import React from "react";
 
 const SideBarBox = ({ title, image }) => {
   return (
-    <div className="w-full flex gap-2 py-5 items-center  hover:bg-MainBlue/10">
-      <div class=" w-4 h-4">
-        <img className="h-full w-full object-fit" src={image} />
+    <div className="w-full flex gap-3 py-4 cursor-pointer px-3 items-center  rounded-lg hover:bg-MainBlue/10">
+      <div className={`w-4.5 `}>
+        <img className="h-full w-full object-cover" src={image} />
       </div>
-      <h4 className="text-md text-MainOffWhiteText font-jakarta font-semibold">
+      <h4 className="text-sm text-MainOffWhiteText font-jakarta font-semibold">
         {title}
       </h4>
     </div>
