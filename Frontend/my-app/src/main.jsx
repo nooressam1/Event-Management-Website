@@ -4,14 +4,16 @@ import "./index.css"; // Ensure this contains the @tailwind directives
 import SideNavigationBar from "./Modules/shared/component/SideNavigationBar";
 import pfpExample from "../src/assets/pfpExample.png";
 import CustomButton from "./Modules/shared/component/CustomButton";
+import Footer from "./Modules/shared/component/Footer";
 
 const PageTemplate = () => {
   return (
     <div className="mmin-h-screen flex bg-MainBackground font-inter">
       <SideNavigationBar></SideNavigationBar>
-      <div className="w-screen h-screen px-8 py-5  ">
+      <div className="w-screen h-screen flex flex-col">
         {/*all content will go in here */}
-       
+        <div className="w-full flex-1  h-screen px-8 py-5 "> </div>
+        <Footer></Footer>
       </div>
     </div>
   );
