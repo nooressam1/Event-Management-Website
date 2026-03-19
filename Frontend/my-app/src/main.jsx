@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css"; // Ensure this contains the @tailwind directives
 import SideNavigationBar from "./Modules/shared/component/SideNavigationBar";
+import pfpExample from "../src/assets/pfpExample.png";
+import CustomButton from "./Modules/shared/component/CustomButton";
 
 const PageTemplate = () => {
   return (
@@ -9,6 +11,7 @@ const PageTemplate = () => {
       <SideNavigationBar></SideNavigationBar>
       <div className="w-screen h-screen px-8 py-5  ">
         {/*all content will go in here */}
+       
       </div>
     </div>
   );
