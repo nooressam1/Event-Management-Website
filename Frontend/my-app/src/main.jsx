@@ -1,32 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css"; // Ensure this contains the @tailwind directives
+import SideNavigationBar from "./Modules/shared/component/SideNavigationBar";
+import pfpExample from "../src/assets/pfpExample.png";
+import CustomButton from "./Modules/shared/component/CustomButton";
+import Footer from "./Modules/shared/component/Footer";
 
-const TestTailwind = () => {
+const PageTemplate = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-MainBackground font-inter text-white">
-      <div className="p-10 rounded-xl border-2 border-LineBox bg-NavigationBackground shadow-2xl text-center">
-        <h1 className="text-4xl font-jakarta font-bold mb-4 text-MainGreen">
-          Tailwind is Active!
-        </h1>
-        <p className="text-lg text-slate-400 mb-6">
-          Testing custom config:{" "}
-          <span className="text-MainRed font-mono">MainRed</span> and
-          <span className="text-MainYellow font-mono ml-2">MainYellow</span>
-        </p>
-
-        <div className="flex gap-4 justify-center">
-          <button className="px-6 py-2 bg-MainBlue rounded-lg hover:opacity-90 transition-all">
-            Blue Action
-          </button>
-          <button className="px-6 py-2 bg-MainGreenBackground border border-MainGreenLine text-MainGreen rounded-lg">
-            Green Theme
-          </button>
-        </div>
-      </div>
-
-      <div className="mt-8 p-4 bg-OffRedbackground border-l-4 border-OffRedLine text-OffRed">
-        Status: Custom Design System Loaded Successfully.
+    <div className="mmin-h-screen flex bg-MainBackground font-inter">
+      <SideNavigationBar></SideNavigationBar>
+      <div className="w-screen h-screen flex flex-col">
+        {/*all content will go in here */}
+        <div className="w-full flex-1  h-screen px-8 py-5 "> </div>
+        <Footer></Footer>
       </div>
     </div>
   );
@@ -34,6 +21,6 @@ const TestTailwind = () => {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <TestTailwind />
+    <PageTemplate />
   </React.StrictMode>,
 );
