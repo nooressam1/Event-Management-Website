@@ -10,6 +10,8 @@ export default {
         MainRed: "#F43F5E",
         MainGreenBackgroundLighter: "#0D2731",
         MainBlue: "#1978E5",
+        MainBlueBackground: "#0E1E33",
+        MainBlueLine: "#1E3A8A",
         MainGreen: "#34D399",
         MainGreenBackground: "#0B2027",
         MainGreenLine: "#0D4D42",
@@ -20,7 +22,7 @@ export default {
         OffRedbackground: "#211423",
         OffRedLine: "#602135",
         MainOffWhiteText: "#94A3B8",
-        SecondOffWhiteText: "#64748B"
+        SecondOffWhiteText: "#64748B",
       },
       fontFamily: {
         inter: ["Inter", "sans-serif"],
@@ -29,4 +31,4 @@ export default {
     },
   },
   plugins: [],
-}
+};
