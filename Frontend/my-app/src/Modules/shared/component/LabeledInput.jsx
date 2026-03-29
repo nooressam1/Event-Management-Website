@@ -18,7 +18,7 @@ const LabeledInput = ({
 
   return (
     <div className="w-full max-w-md font-inter group">
-      <label className="block mb-2 ml-2 text-sm font-semibold text-white transition-colors group-focus-within:text-MainBlue">
+      <label className="block mb-2 ml-2 text-sm font-medium text-MainOffWhiteText transition-colors group-focus-within:text-MainBlue">
         {label}
       </label>
 

@@ -4,14 +4,15 @@ import ColorMap from "./ColorMap"; // Adjust the path as needed
 const CustomButton = ({
   title,
   icon,
-  color = "blue", // Default theme
+  className = "",
+
   iconPosition = "LEFT",
   hasBorder = false,
   onClick,
 }) => {
   // Normalize the color string and get the theme from the map
   const selectedColor = color.toLowerCase();
-  const theme = ColorMap[selectedColor] || colorMap.blue;
+  const theme = ColorMap[selectedColor] || ColorMap.blue;
 
   return (
     <button

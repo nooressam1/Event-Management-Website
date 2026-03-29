@@ -2,6 +2,7 @@ import React from "react";
 import background from "../../../assets/Authbackground.png";
 import Footer from "../../shared/component/Footer";
 import EventHubIcon from "../../../assets/EventHubIcon.png";
+import SignUpPage from "../component/SignUpPage";
 
 const AuthTemp = () => {
   return (
@@ -46,6 +47,9 @@ const AuthTemp = () => {
         </div>
       </div>
       {/* switch between login & signup */}
+      <div className="w-1/2 justify-center items-center flex flex-col">
+        <SignUpPage></SignUpPage>
+      </div>
     </div>
   );
 };
