@@ -16,6 +16,7 @@ import SearchBar from "./Modules/shared/component/SearchBar";
 // Assets & Icons - FIXED: Added Hourglass to the import list
 import pfpExample from "../src/assets/pfpExample.png";
 import { User, CheckCircle, Users, Hourglass } from "lucide-react";
+import AuthTemp from "./Modules/auth/pages/AuthTemp";
 
 const PageTemplate = () => {
   const [username, setUsername] = useState("");
@@ -90,7 +91,7 @@ const rootElement = document.getElementById("root");
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-      <PageTemplate />
+      <AuthTemp />
     </React.StrictMode>,
   );
 }
