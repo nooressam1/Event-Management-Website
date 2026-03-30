@@ -1,41 +1,26 @@
 import React from "react";
-import ColorMap from "./ColorMap"; // Adjust the path as needed
 
 const CustomButton = ({
   title,
-  icon,
-  className = "",
-
+  icon: Icon,
   iconPosition = "LEFT",
-  hasBorder = false,
   onClick,
+  className = "",
 }) => {
-  // Normalize the color string and get the theme from the map
-  const selectedColor = color.toLowerCase();
-  const theme = ColorMap[selectedColor] || ColorMap.blue;
-
   return (
     <button
       onClick={onClick}
       className={`
-        h-full w-full px-4 py-2 rounded flex items-center justify-center gap-2 transition 
-        ${theme.bg} 
-        ${theme.text} 
-        ${hasBorder ? `border ${theme.border}` : "border-transparent"}
+        h-full w-full px-4 py-2 rounded flex items-center justify-center gap-2 transition
         hover:opacity-80
+        ${className}
       `}
     >
-      {/* LEFT ICON */}
-      {icon && iconPosition === "LEFT" && (
-        <img src={icon} alt="icon" className="w-4 h-4" />
-      )}
+      {Icon && iconPosition === "LEFT" && <Icon size={18} />}
 
       <span className="font-medium">{title}</span>
 
-      {/* RIGHT ICON */}
-      {icon && iconPosition === "RIGHT" && (
-        <img src={icon} alt="icon" className="w-4 h-4" />
-      )}
+      {Icon && iconPosition === "RIGHT" && <Icon size={18} />}
     </button>
   );
 };

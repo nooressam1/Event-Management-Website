@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import background from "../../../assets/Authbackground.png";
 import Footer from "../../shared/component/Footer";
 import EventHubIcon from "../../../assets/EventHubIcon.png";
-import SignUpPage from "../component/SignUpPage";
-
+import SignUpPage from "../component/SignUpPage.jsx";
+import LoginPage from "../component/LoginPage.jsx";
+import { useLocation } from "react-router-dom";
 const AuthTemp = () => {
+  const location = useLocation();
+  const isLogin = location.pathname === "/login";
   return (
     <div className="w-full h-screen flex bg-MainBackground">
       <div className="w-1/2 h-full flex ">
@@ -48,7 +51,7 @@ const AuthTemp = () => {
       </div>
       {/* switch between login & signup */}
       <div className="w-1/2 justify-center items-center flex flex-col">
-        <SignUpPage></SignUpPage>
+        {isLogin ? <LoginPage /> : <SignUpPage />}
       </div>
     </div>
   );

@@ -5,7 +5,6 @@ import * as Yup from "yup";
 import LabeledInput from "../../shared/component/LabeledInput";
 import CustomButton from "../../shared/component/CustomButton";
 import { Link } from "react-router-dom";
-
 const signUpSchema = Yup.object({
   username: Yup.string()
     .min(3, "Username must be at least 3 characters")
@@ -20,7 +19,7 @@ const signUpSchema = Yup.object({
     .required("Password is required"),
 });
 
-const SignUpPage = () => {
+const LoginPage = () => {
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -32,7 +31,6 @@ const SignUpPage = () => {
       console.log("Form Submitted:", values);
     },
   });
-
   return (
     <form
       onSubmit={formik.handleSubmit}
@@ -40,29 +38,14 @@ const SignUpPage = () => {
     >
       <div className="gap-2 flex flex-col">
         <h1 className="text-white font-jakarta font-black text-2xl">
-          Create Organizer Account
+          Welcome Back{" "}
         </h1>
         <h1 className="hidden sm:block text-MainOffWhiteText font-jakarta font-medium text-sm">
-          Start managing your events with power and ease
+          Log in to manage your events and track RSVPs.{" "}
         </h1>
       </div>
 
       <div className="w-full flex flex-col gap-5">
-        <div>
-          <LabeledInput
-            label="Username"
-            icon={User}
-            text={formik.values.username}
-            type="text"
-            setText={(value) => formik.setFieldValue("username", value)}
-          />
-          {formik.touched.username && formik.errors.username && (
-            <p className="text-red-500 text-sm mt-1">
-              {formik.errors.username}
-            </p>
-          )}
-        </div>
-
         <div>
           <LabeledInput
             label="Email"
@@ -93,22 +76,19 @@ const SignUpPage = () => {
 
         <div className="w-full h-12">
           <CustomButton
-            type="submit"
-            title="Sign Up"
+            title="Login "
             icon={ArrowRight}
             iconPosition="RIGHT"
             className="bg-MainBlue text-white rounded-lg"
           />
         </div>
         <div className="flex items-center justify-center gap-2 text-sm">
-          <span className="text-MainOffWhiteText">
-            Already have an account?
-          </span>
+          <span className="text-MainOffWhiteText">Dont have an account ?</span>
           <Link
-            to="/login"
+            to="/signup"
             className="text-MainBlue font-semibold hover:underline"
           >
-            Login{" "}
+            Sign Up
           </Link>
         </div>
       </div>
@@ -116,4 +96,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default LoginPage;
