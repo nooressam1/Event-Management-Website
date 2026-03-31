@@ -1,40 +1,52 @@
 import React from "react";
-import ColorMap from "./ColorMap"; // Adjust the path as needed
+import ColorMap from "./ColorMap";
 
 const CustomButton = ({
   title,
-  icon,
-  color = "blue", // Default theme
-  iconPosition = "LEFT",
+  icon: Icon,
+  color = "blue",
+  iconPosition = "LEFT", // "LEFT" or "RIGHT"
   hasBorder = false,
-  onClick,
+  onClick = () => {},
+  width = "w-fit",
+  height = "h-fit",
+  px = "px-6",
+  py = "py-3",
 }) => {
-  // Normalize the color string and get the theme from the map
   const selectedColor = color.toLowerCase();
-  const theme = ColorMap[selectedColor] || colorMap.blue;
+  const theme = ColorMap[selectedColor] || ColorMap.blue;
+  // Determine if we need to flip the order based on iconPosition
+  const isRight = iconPosition.toUpperCase() === "RIGHT";
 
   return (
     <button
       onClick={onClick}
       className={`
-        h-full w-full px-4 py-2 rounded flex items-center justify-center gap-2 transition 
+        ${width} ${height} ${px} ${py}
+        rounded-xl flex items-center justify-center gap-2 
+        transition-all duration-200 cursor-pointer
+        font-inter font-semibold text-sm
+        /* Flex Direction Logic */
+        ${isRight ? "flex-row-reverse" : "flex-row"}
+        /* Theme Colors */
         ${theme.bg} 
         ${theme.text} 
-        ${hasBorder ? `border ${theme.border}` : "border-transparent"}
-        hover:opacity-80
+        ${hasBorder ? `border-2 ${theme.border}` : "border-2 border-transparent"}
+        /* Interaction States */
+        hover:brightness-110 hover:shadow-lg
+        active:scale-[0.98] active:brightness-90
       `}
     >
-      {/* LEFT ICON */}
-      {icon && iconPosition === "LEFT" && (
-        <img src={icon} alt="icon" className="w-4 h-4" />
-      )}
+      {/* Icon - Rendered only once */}
+      {Icon &&
+        (typeof Icon === "string" ? (
+          <img src={Icon} alt="" className="w-5 h-5 object-contain" />
+        ) : (
+          <Icon size={20} strokeWidth={2} />
+        ))}
 
-      <span className="font-medium">{title}</span>
-
-      {/* RIGHT ICON */}
-      {icon && iconPosition === "RIGHT" && (
-        <img src={icon} alt="icon" className="w-4 h-4" />
-      )}
+      {/* Title - Rendered only once */}
+      <span>{title}</span>
     </button>
   );
 };

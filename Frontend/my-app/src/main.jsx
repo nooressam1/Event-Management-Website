@@ -66,7 +66,13 @@ const PageTemplate = () => {
               icon={Hourglass} // This was the cause of the error
             />
           </StatsWrapper>
-
+          <CustomButton
+            title="Click Me!"
+            icon={Hourglass}
+            hasBorder={true}
+            color="green"
+            iconPosition="RIGHT"
+          />
           {/* Test area to ensure scroll works */}
           <div className="h-[600px] border border-dashed border-white/10 rounded-2xl flex items-center justify-center">
             <p className="text-MainOffWhiteText">
