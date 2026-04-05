@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import LabeledInput from "../../shared/component/LabeledInput";
 import CustomButton from "../../shared/component/CustomButton";
 import { Link } from "react-router-dom";
-
+import { useAuth } from "../utils/AuthContext.jsx";
 const signUpSchema = Yup.object({
   username: Yup.string()
     .min(3, "Username must be at least 3 characters")
@@ -21,6 +21,8 @@ const signUpSchema = Yup.object({
 });
 
 const SignUpPage = () => {
+  const { signup } = useAuth();
+
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -28,8 +30,12 @@ const SignUpPage = () => {
       password: "",
     },
     validationSchema: signUpSchema,
-    onSubmit: (values) => {
-      console.log("Form Submitted:", values);
+    onSubmit: async (values) => {
+      try {
+        await signup(values.username, values.email, values.password);
+      } catch (error) {
+        console.error("Signup failed:", error);
+      }
     },
   });
 

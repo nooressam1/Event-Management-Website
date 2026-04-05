@@ -18,6 +18,7 @@ import { BrowserRouter } from "react-router-dom";
 import pfpExample from "../src/assets/pfpExample.png";
 import { User, CheckCircle, Users, Hourglass } from "lucide-react";
 import AuthTemp from "./Modules/auth/pages/AuthTemp";
+import { AuthProvider } from "./Modules/auth/utils/AuthContext";
 
 const PageTemplate = () => {
   const [username, setUsername] = useState("");
@@ -92,7 +93,9 @@ const rootElement = document.getElementById("root");
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <BrowserRouter>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </BrowserRouter>,
   );
 }

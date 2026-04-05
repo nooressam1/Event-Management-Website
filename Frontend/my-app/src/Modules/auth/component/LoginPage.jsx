@@ -5,11 +5,8 @@ import * as Yup from "yup";
 import LabeledInput from "../../shared/component/LabeledInput";
 import CustomButton from "../../shared/component/CustomButton";
 import { Link } from "react-router-dom";
-const signUpSchema = Yup.object({
-  username: Yup.string()
-    .min(3, "Username must be at least 3 characters")
-    .required("Username is required"),
-
+import { useAuth } from "../utils/AuthContext";
+const loginSchema = Yup.object({
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
@@ -20,15 +17,16 @@ const signUpSchema = Yup.object({
 });
 
 const LoginPage = () => {
+  const { login } = useAuth();
+
   const formik = useFormik({
     initialValues: {
-      username: "",
       email: "",
       password: "",
     },
-    validationSchema: signUpSchema,
+    validationSchema: loginSchema,
     onSubmit: (values) => {
-      console.log("Form Submitted:", values);
+      login(values.email, values.password);
     },
   });
   return (
