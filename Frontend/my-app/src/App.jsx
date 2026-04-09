@@ -15,12 +15,16 @@ import { User, CheckCircle, Users, Hourglass } from "lucide-react";
 import { Outlet } from "react-router-dom";
 import ManageWaitlist from "./Modules/invitations/pages/manageWaitlist";
 import EventHubIcon from "../src/assets/EventHubIcon.png";
+import CustomButton from "./Modules/shared/component/CustomButton";
+import { useNavigate } from "react-router-dom";
 
-// Guest layout - with header
+// Guest layout with header
 const GuestLayout = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="h-screen w-full bg-MainBackground font-inter text-white">
-      <div className="w-full h-fit bg-MainBlueBackground p-5">
+      <div className=" flex justify-between items-center y-w-full h-fit bg-MainBlueBackground px-10 py-5">
         <div className="flex gap-3">
           <div className="w-6 h-6">
             <img
@@ -33,13 +37,22 @@ const GuestLayout = () => {
             EventHub
           </h1>
         </div>
+        <div className="w-25">
+          <CustomButton
+            onClick={() => navigate("/login")}
+            title="Login"
+            className="bg-MainBlue  text-white rounded-lg"
+          />
+        </div>
       </div>
       <Outlet />
+
+      <Footer />
     </div>
   );
 };
 
-// User layout - with sidebar
+// User layout with sidebar
 const UserLayout = () => {
   return (
     <div className="h-screen w-full flex bg-MainBackground font-inter text-white overflow-hidden">
@@ -57,10 +70,13 @@ const UserLayout = () => {
 function App() {
   return (
     <Routes>
-      <Route element={<GuestLayout />}>
+      <Route>
+        {" "}
         <Route path="/login" element={<AuthTemp />} />
         <Route path="/signup" element={<AuthTemp />} />
-        <Route path="/invitation" element={<InvitationPage />} />
+      </Route>
+      <Route element={<GuestLayout />}>
+        <Route path="/invitation/:id" element={<InvitationPage />} />
       </Route>
 
       <Route element={<UserLayout />}>

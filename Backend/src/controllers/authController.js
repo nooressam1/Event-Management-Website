@@ -85,23 +85,6 @@ export const getCurrentUser = async (req, res) => {
   }
 };
 
-export const createDocument = async (title, content, userId) => {
-  try {
-    const { privateKey, publicKey } = generateKeys();
-    const { hashedDoc, signedDoc } = encryptDoc(content, privateKey);
-    const document = await Document.create({
-      title,
-      content,
-      hash: hashedDoc,
-      userId,
-      signature: signedDoc,
-      publicKey,
-    });
-    return document;
-  } catch (err) {
-    console.log(err);
-  }
-};
 
 export const logout = async (req, res) => {
   try {

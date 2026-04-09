@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import authRoutes from "./src/routes/authRoutes.js";
+import rsvpRoutes from "./src/routes/rsvpRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -18,10 +19,8 @@ app.use(express.json());
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/rsvp", rsvpRoutes);
 
-app.get("/", (req, res) => {
-  res.send("Backend is working!");
-});
 
 // Connect to MongoDB
 await connectDB();
