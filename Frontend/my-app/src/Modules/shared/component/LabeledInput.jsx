@@ -8,6 +8,7 @@ const LabeledInput = ({
   text = "",
   setText = () => {},
   icon: Icon = Mail,
+  isIcon = true,
   width = "px-4",
   height = "py-3",
 }) => {
@@ -30,11 +31,13 @@ const LabeledInput = ({
           focus-within:shadow-[0_0_12px_rgba(25,120,229,0.25)]
         `}
       >
-        <Icon
-          size={20}
-          className="text-SecondOffWhiteText transition-colors group-focus-within:text-MainBlue"
-          strokeWidth={1.5}
-        />
+        {isIcon && (
+          <Icon
+            size={20}
+            className="text-SecondOffWhiteText transition-colors group-focus-within:text-MainBlue"
+            strokeWidth={1.5}
+          />
+        )}
 
         <input
           type={currentType}
