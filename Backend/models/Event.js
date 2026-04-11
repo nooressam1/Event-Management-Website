@@ -14,7 +14,12 @@ const eventSchema = new mongoose.Schema(
       required: [true, "Event title is required"],
       trim: true,
     },
-    description: {
+    shortDescription: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    Description: {
       type: String,
       trim: true,
       default: "",
@@ -27,10 +32,24 @@ const eventSchema = new mongoose.Schema(
       type: Date,
       required: [true, "Event date is required"],
     },
-    location: {
+    time: {
       type: String,
-      trim: true,
-      default: "",
+      required: [true, "Event time is required"],
+    },
+    location: {
+      address: {
+        type: String,
+        trim: true,
+        default: "",
+      },
+      lat: {
+        type: Number,
+        default: null,
+      },
+      lng: {
+        type: Number,
+        default: null,
+      },
     },
     capacity: {
       type: Number,

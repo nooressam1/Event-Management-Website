@@ -44,6 +44,7 @@ const rsvpSchema = new mongoose.Schema(
       type: String,
       enum: Object.values(RSVP_STATUS),
       required: true,
+      default: "PENDING",
     },
     dietaryNotes: {
       //might edit later to somthing more structured

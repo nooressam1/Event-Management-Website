@@ -23,8 +23,9 @@ const GuestLayout = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="h-screen w-full bg-MainBackground font-inter text-white">
-      <div className=" flex justify-between items-center y-w-full h-fit bg-MainBlueBackground px-10 py-5">
+    <div className="min-h-screen w-full flex flex-col bg-MainBackground font-inter text-white">
+      {/* Header */}
+      <div className="flex justify-between items-center w-full h-fit bg-MainBlueBackground px-10 py-5">
         <div className="flex gap-3">
           <div className="w-6 h-6">
             <img
@@ -41,12 +42,17 @@ const GuestLayout = () => {
           <CustomButton
             onClick={() => navigate("/login")}
             title="Login"
-            className="bg-MainBlue  text-white rounded-lg"
+            className="bg-MainBlue text-white rounded-lg"
           />
         </div>
       </div>
-      <Outlet />
 
+      {/* Content - grows to fill space, centered */}
+      <main className="flex-1 flex flex-col items-center justify-center">
+        <Outlet />
+      </main>
+
+      {/* Footer - always at bottom */}
       <Footer />
     </div>
   );

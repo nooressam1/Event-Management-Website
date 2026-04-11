@@ -16,11 +16,11 @@ const CustomButton = ({
         ${className}
       `}
     >
-      {Icon && iconPosition === "LEFT" && <Icon size={18} />}
+      {Icon && iconPosition === "LEFT" && <Icon size={20} />}
 
       <span className="font-medium">{title}</span>
 
-      {Icon && iconPosition === "RIGHT" && <Icon size={18} />}
+      {Icon && iconPosition === "RIGHT" && <Icon size={20} />}
     </button>
   );
 };

@@ -18,3 +18,21 @@ export const getRsvp = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const updateRSVP = async (req, res) => {
+
+  const {  } = req.params;
+  try {
+    const rsvp = await RSVP.findById(id).populate("eventId"); // ← pulls event data in
+
+    if (!rsvp) return res.status(404).json({ message: "Invitation not found" });
+
+    res.status(200).json({
+      rsvp,
+      event: rsvp.eventId,
+    });
+  } catch (err) {
+    console.error("RSVP fetch error:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
