@@ -1,16 +1,16 @@
-import { ArrowRight, Lock, Mail, User } from "lucide-react";
-import React from "react";
+import { ArrowRight, Lock, Mail } from "lucide-react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import LabeledInput from "../../shared/component/LabeledInput";
 import CustomButton from "../../shared/component/CustomButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/AuthContext";
+
 const loginSchema = Yup.object({
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
-
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
@@ -18,15 +18,22 @@ const loginSchema = Yup.object({
 
 const LoginPage = () => {
   const { login } = useAuth();
+  const navigate = useNavigate();
+  const [serverError, setServerError] = useState("");
 
   const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
+    initialValues: { email: "", password: "" },
     validationSchema: loginSchema,
-    onSubmit: (values) => {
-      login(values.email, values.password);
+    onSubmit: async (values) => {
+      try {
+        setServerError("");
+        await login(values.email, values.password);
+        navigate("/myevents");
+      } catch (err) {
+        setServerError(
+          err?.response?.data?.message ?? "Login failed. Please try again."
+        );
+      }
     },
   });
   return (
@@ -72,9 +79,14 @@ const LoginPage = () => {
           )}
         </div>
 
+        {serverError && (
+          <p className="text-red-500 text-sm -mt-2">{serverError}</p>
+        )}
+
         <div className="w-full h-12">
           <CustomButton
-            title="Login "
+            type="submit"
+            title="Login"
             icon={ArrowRight}
             iconPosition="RIGHT"
             className="bg-MainBlue text-white rounded-lg"

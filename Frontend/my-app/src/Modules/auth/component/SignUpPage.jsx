@@ -1,10 +1,10 @@
 import { ArrowRight, Lock, Mail, User } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import LabeledInput from "../../shared/component/LabeledInput";
 import CustomButton from "../../shared/component/CustomButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/AuthContext.jsx";
 const signUpSchema = Yup.object({
   username: Yup.string()
@@ -22,19 +22,21 @@ const signUpSchema = Yup.object({
 
 const SignUpPage = () => {
   const { signup } = useAuth();
+  const navigate = useNavigate();
+  const [serverError, setServerError] = useState("");
 
   const formik = useFormik({
-    initialValues: {
-      username: "",
-      email: "",
-      password: "",
-    },
+    initialValues: { username: "", email: "", password: "" },
     validationSchema: signUpSchema,
     onSubmit: async (values) => {
       try {
+        setServerError("");
         await signup(values.username, values.email, values.password);
-      } catch (error) {
-        console.error("Signup failed:", error);
+        navigate("/myevents");
+      } catch (err) {
+        setServerError(
+          err?.response?.data?.message ?? "Sign up failed. Please try again."
+        );
       }
     },
   });
@@ -96,6 +98,10 @@ const SignUpPage = () => {
             </p>
           )}
         </div>
+
+        {serverError && (
+          <p className="text-red-500 text-sm -mt-2">{serverError}</p>
+        )}
 
         <div className="w-full h-12">
           <CustomButton
