@@ -13,9 +13,9 @@ import AttendeeReviews from "../components/AttendeeReviews";
 const AnalyticsPage = () => {
   const navigate = useNavigate();
   const [eventData] = useState({
-    title: "Tech Mixer 2024: Analytics",
+    title: "Tech Mixer 2026: Analytics",
     location: "San Francisco Innovation Hub",
-    date: "June 12, 2024",
+    date: "June 12, 2026",
     totalRsvps: 428,
     rsvpChange: "-18%",
     checkIns: 356,

@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <div className="w-full h-21 border-t-2 border-LineBox px-5 py-7">
       <h1 className="text-SecondOffWhiteText text-sm ">
-        ©2024 EventHub Platform.
+        ©2026 EventHub Platform.
       </h1>
     </div>
   );
