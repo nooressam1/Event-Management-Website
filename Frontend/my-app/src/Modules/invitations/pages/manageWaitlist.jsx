@@ -16,7 +16,7 @@ const ManageWaitlist = () => {
         <div className=" flex flex-row justify-between items-center">
           <div>
             <h1 className="text-white font-jakarta font-black text-lg">
-              Location
+              Manage Waitlist
             </h1>
             <p className="text-MainOffWhiteText font-inter text-sm">
               {/* {event.title} */}
