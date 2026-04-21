@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import SearchBar from "../../shared/component/SearchBar";
 import GuestBox from "../component/guestBox";
 import StatCard from "../../shared/component/StatCard";
-import { Trash } from "lucide-react";
+import { Check, CircleCheck, Mail, Trash, Users } from "lucide-react";
+import StatBar from "../../shared/component/StatBar";
+import CustomButton from "../../shared/component/CustomButton";
 
 const ManageWaitlist = () => {
   const [selectAll, setSelectAll] = useState(false);
@@ -72,11 +74,62 @@ const ManageWaitlist = () => {
         </div>
         <GuestBox name="test" email="tgest" joinedTime="15m"></GuestBox>
       </div>
-      <div>
-      
+      <div className="flex flex-row gap-5">
         <div className="h-full w-0.5 bg-LineBox"></div>
-        <div>
-         
+        <div className="flex flex-col justify-between">
+          <div className="flex flex-col gap-5">
+            <div>
+              <StatCard
+                label="Capacity left"
+                value="250 "
+                color="blue"
+                icon={Users}
+              >
+                <StatBar current={250} total={500} />
+              </StatCard>
+            </div>
+            <div className="flex flex-col gap-3">
+              <h1 className="text-MainOffWhiteText font-inter text-sm">
+                {/* {event.title} */}
+                Quick Actions
+              </h1>
+              <div>
+                <CustomButton
+                  type="submit"
+                  title={`Move to Confirm (${3})`}
+                  icon={CircleCheck}
+                  className="bg-MainBlue px-8 py-4 text-sm text-white rounded-lg w-full"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex  flex-row w-full justify-between border-dotted items-center rounded-lg bg-MainBlueBackground border-LineBox border-2 py-4 px-5 gap-5">
+            <div className="flex flex-row gap-5">
+              <div className="flex flex-col gap-3">
+                <h1 className=" text-MainOffWhiteText  font-inter uppercase font-medium text-sm">
+                  Recent Activity
+                </h1>
+                <div className="flex  gap-2 pl-3">
+                  <Check className="text-MainGreen" size={20} strokeWidth={2} />
+
+                  <h1 className=" text-white capitilize font-inter font-normal text-sm">
+                    John Doe was moved to confirmed.
+                  </h1>
+                </div>
+                <div className="flex  gap-2 pl-3">
+                  <Mail
+                    className="text-MainOffWhiteText"
+                    size={20}
+                    strokeWidth={2}
+                  />
+
+                  <h1 className=" text-MainOffWhiteText capitilize font-inter font-normal text-sm">
+                    Waitlist invitation sent to 12 people.
+                  </h1>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
