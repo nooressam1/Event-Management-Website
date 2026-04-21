@@ -19,7 +19,7 @@ const eventSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
-    Description: {
+    description: {
       type: String,
       trim: true,
       default: "",
@@ -61,6 +61,10 @@ const eventSchema = new mongoose.Schema(
       enum: Object.values(EVENT_STATUS),
       default: EVENT_STATUS.DRAFT,
     },
+    time: {
+      type: String,
+      required: [true, "Event time is required"],
+    },
     inviteCode: {
       type: String,
       unique: true,
@@ -74,6 +78,25 @@ const eventSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    enableWaitlist: {
+      type: Boolean,
+      default: false,
+    },
+    allowPlusOnes: {
+      type: Boolean,
+      default: false,
+    },
+    rsvpQuestions: [
+      {
+        label: { type: String, required: true },
+        fieldType: {
+          type: String,
+          enum: ["text", "multiple_choice", "yes_no"],
+          default: "text",
+        },
+        required: { type: Boolean, default: false },
+      },
+    ],
   },
   {
     timestamps: true,
@@ -86,7 +109,7 @@ const eventSchema = new mongoose.Schema(
 eventSchema.virtual("rsvps", {
   ref: "RSVP",
   localField: "_id",
-  foreignField: "event",
+  foreignField: "eventId",
 });
 
 // Generate unique invite code
