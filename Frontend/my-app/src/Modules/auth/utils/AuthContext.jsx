@@ -11,13 +11,13 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (username, email, password) => {
     const res = await axios.post(`${API}/api/auth/signup`, { name: username, email, password }, { withCredentials: true });
-    setUser(res.data.user);
+    setUser(res.data);
     return res.data;
   };
 
   const login = async (email, password) => {
     const res = await axios.post(`${API}/api/auth/login`, { email, password }, { withCredentials: true });
-    setUser(res.data.user);
+    setUser(res.data);
     return res.data;
   };
 
