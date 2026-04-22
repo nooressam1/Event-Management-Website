@@ -3,7 +3,7 @@ import { useState } from "react";
 
 const SearchBar = ({
   placeholder = "Search...",
-  onSearch = () => {}, // You can still trigger this on change
+  onSearch = () => {}, 
   width = "max-w-4xl",
 }) => {
   const [query, setQuery] = useState("");

@@ -89,7 +89,7 @@ function App() {
       </Route>
 
       <Route element={<UserLayout />}>
-        <Route path="/dashboard" element={<ManageWaitlist />} />
+        <Route path="/dashboard/:id" element={<ManageWaitlist />} />
         {/* add more user routes here */}
       </Route>
       <Route path="/myevents" element={<MyEvents />} />

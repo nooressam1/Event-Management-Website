@@ -1,3 +1,20 @@
 @import "tailwindcss";
 /* If v4 doesn't automatically detect the config we point to it */
 @config "../tailwind.config.js";
+/* For webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0F172A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1978e5; /* MainBlue */
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1565c0;
+}
