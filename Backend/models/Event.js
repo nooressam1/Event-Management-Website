@@ -83,6 +83,13 @@ const eventSchema = new mongoose.Schema(
         required: { type: Boolean, default: false },
       },
     ],
+
+    // Suite tool persistence — all fields optional with empty defaults
+    suiteData: {
+      plan:          { type: String, default: "" },
+      rsvpQuestions: { type: mongoose.Schema.Types.Mixed, default: [] },
+      flyerSettings: { type: mongoose.Schema.Types.Mixed, default: null },
+    },
   },
   {
     timestamps: true,

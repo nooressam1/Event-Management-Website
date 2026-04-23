@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Calendar, MapPin, Edit2, Share2, Link2Off, ChevronDown, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Calendar, MapPin, Edit2, Share2, Link2Off, ChevronDown, Trash2, Wand2 } from "lucide-react";
 import MoreActionsMenu from "./MoreActionsMenu";
 
 const STATUS_BADGE = {
@@ -12,6 +13,7 @@ const STATUS_BADGE = {
 const INVITE_BASE = `${window.location.origin}/event/`;
 
 const EventHeader = ({ event, revoking, settingStatus, onEdit, onRevokeInvite, onSetStatus, onDeleteClick }) => {
+  const navigate = useNavigate();
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [shareToast, setShareToast] = useState(false);
 
@@ -75,6 +77,13 @@ const EventHeader = ({ event, revoking, settingStatus, onEdit, onRevokeInvite, o
 
         {/* Right: actions */}
         <div className="flex items-center gap-2 shrink-0">
+          <button
+            onClick={() => navigate(`/events/${event._id}/suite`)}
+            className="flex items-center gap-2 px-4 py-2 bg-MainBlue/10 border border-MainBlue/30 hover:bg-MainBlue/20 text-MainBlue rounded-lg text-sm font-medium transition-colors"
+          >
+            <Wand2 size={13} />
+            Creator Suite
+          </button>
           <button
             onClick={onEdit}
             className="flex items-center gap-2 px-4 py-2 bg-MainBackground border border-LineBox hover:border-MainBlue/50 text-MainOffWhiteText hover:text-white rounded-lg text-sm transition-colors"

@@ -323,6 +323,25 @@ export const getEventAttendees = async (req, res) => {
   }
 };
 
+// PATCH /api/events/:id/suite-data
+export const saveSuiteData = async (req, res) => {
+  try {
+    const event = await Event.findOne({ _id: req.params.id, organizer: req.user.id });
+    if (!event) return res.status(404).json({ success: false, message: "Event not found" });
+
+    if (!event.suiteData) event.suiteData = {};
+    const { plan, rsvpQuestions, flyerSettings } = req.body;
+    if (plan          !== undefined) event.suiteData.plan          = plan;
+    if (rsvpQuestions !== undefined) event.suiteData.rsvpQuestions = rsvpQuestions;
+    if (flyerSettings !== undefined) event.suiteData.flyerSettings = flyerSettings;
+    event.markModified("suiteData");
+    await event.save();
+    res.json({ success: true, suiteData: event.suiteData });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
 // POST /api/events/:id/start
 export const startEvent = async (req, res) => {
   try {

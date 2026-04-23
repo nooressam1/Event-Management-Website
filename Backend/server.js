@@ -6,9 +6,11 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import eventRoutes from "./src/routes/eventRoutes.js";
+import aiSuiteRoutes from "./src/routes/aiSuiteRoutes.js";
+import budgetRoutes from "./src/routes/budgetRoutes.js";
 import { initSocket } from "./src/socket.js";
 
-dotenv.config();
+dotenv.config(); // loads MONGO_URI, PORT, JWT_SECRET, GROQ_API_KEY
 
 const app = express();
 const PORT = process.env.PORT;
@@ -26,6 +28,8 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/events", eventRoutes);
+app.use("/api/suite", aiSuiteRoutes);
+app.use("/api/suite/budget", budgetRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend is working!");

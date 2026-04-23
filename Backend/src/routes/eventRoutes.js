@@ -10,6 +10,7 @@ import {
   startEvent,
   exportAttendees,
   revokeInviteLink,
+  saveSuiteData,
 } from "../controllers/eventController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
@@ -27,5 +28,6 @@ router.get("/:id/attendees", getEventAttendees);
 router.post("/:id/start", startEvent);
 router.post("/:id/revoke-invite", revokeInviteLink);
 router.get("/:id/export", exportAttendees);
+router.patch("/:id/suite-data", saveSuiteData);
 
 export default router;
