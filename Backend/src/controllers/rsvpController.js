@@ -19,7 +19,7 @@ export const getRsvp = async (req, res) => {
 };
 
 export const updateRSVP = async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   try {
     const rsvp = await RSVP.findById(id).populate("eventId"); // ← pulls event data in
 
@@ -56,12 +56,24 @@ export const bulkUpdateStatus = async (req, res) => {
   try {
     const { rsvpIds, status } = req.body;
 
-    await RSVP.updateMany(
-      { _id: { $in: rsvpIds } },
-      { $set: { status } }
-    );
+    await RSVP.updateMany({ _id: { $in: rsvpIds } }, { $set: { status } });
 
-    res.json({  message: `${rsvpIds.length} guests updated` });
+    res.json({ message: `${rsvpIds.length} guests updated` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+export const deleteRsvp = async (req, res) => {
+  try {
+    const { rsvpIds } = req.body;
+
+    const rsvp = await RSVP.findByIdAndDelete(rsvpIds);
+    if (!rsvp)
+      return res
+        .status(404)
+        .json({ success: false, message: "RSVP not found" });
+
+    res.json({ message: `${rsvpIds.length} guests updated` });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

@@ -13,7 +13,7 @@ import StatPercentage from "./Modules/shared/component/StatPercentage";
 import SearchBar from "./Modules/shared/component/SearchBar";
 import { User, CheckCircle, Users, Hourglass } from "lucide-react";
 import { Outlet } from "react-router-dom";
-import ManageWaitlist from "./Modules/invitations/pages/manageWaitlist";
+import ManageWaitlist from "./Modules/invitations/pages/manageAttendees";
 import EventHubIcon from "../src/assets/EventHubIcon.png";
 import CustomButton from "./Modules/shared/component/CustomButton";
 import { useNavigate } from "react-router-dom";
@@ -61,7 +61,7 @@ const GuestLayout = () => {
 // User layout with sidebar
 const UserLayout = () => {
   return (
-    <div className="h-screen w-full flex bg-MainBackground font-inter text-white overflow-hidden">
+    <div className="h-screen w-full flex flex-col md:flex-row bg-MainBackground font-inter text-white overflow-hidden">
       <SideNavigationBar />
       <div className="flex-1 flex flex-col min-w-0 h-full">
         <main className="flex-1 px-8 py-5 space-y-8 overflow-y-auto custom-scrollbar">
