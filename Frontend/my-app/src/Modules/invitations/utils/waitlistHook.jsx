@@ -5,6 +5,8 @@ export const useWaitlist = (id) => {
   const [rsvpInvitations, setRsvpInvitations] = useState([]);
   const [eventInfo, setEventInfo] = useState();
   const [attendingCount, setAttendingCount] = useState(0);
+  const [checkedInCount, setCheckedInCount] = useState(0);
+  const [attending, setAttending] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [recentActivity, setRecentActivity] = useState([]);
 
@@ -38,22 +40,36 @@ export const useWaitlist = (id) => {
     }
   };
 
-  const fetchAttendingCount = async () => {
+  const fetchAttending = async () => {
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/rsvp/${id}/ATTENDING`,
         { withCredentials: true },
       );
       setAttendingCount(response.data.rsvps.length);
-      console.log(attendingCount, "testinggg");
+      setAttending(response.data.rsvps);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const fetchCheckedIn = async () => {
+    try {
+      console.log("testing call");
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/rsvp/${id}/checkedIn`,
+        { withCredentials: true },
+      );
+      setCheckedInCount(response.data.rsvps.length);
+      console.log("testing call", response.data.rsvps.length);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     fetchGuests();
-    fetchAttendingCount();
+    fetchCheckedIn();
+    fetchAttending();
   }, [id]);
 
   const handleMoveToConfirmed = async (selectedGuests, onSuccess) => {
@@ -70,7 +86,7 @@ export const useWaitlist = (id) => {
       movedGuests.forEach((u) => addActivity(u.guestName, "confirmed"));
 
       await fetchGuests();
-      await fetchAttendingCount();
+      await fetchAttending();
       onSuccess();
     } catch (error) {
       console.log(error);
@@ -83,7 +99,9 @@ export const useWaitlist = (id) => {
   };
   const handleDelete = async (guestId, guestName) => {
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/api/rsvp/delete/${guestId}`);
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/rsvp/delete/${guestId}`,
+      );
       addActivity(guestName, "deleted");
       await fetchGuests();
     } catch (error) {
@@ -93,9 +111,11 @@ export const useWaitlist = (id) => {
   return {
     rsvpInvitations,
     eventInfo,
+    attending,
     attendingCount,
     isLoading,
     recentActivity,
+    checkedInCount,
     fetchGuests,
     handleDelete,
     handleMoveToConfirmed,

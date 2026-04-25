@@ -18,7 +18,7 @@ const SearchBar = ({
     <div className={`w-full ${width} font-inter relative`}>
   <div
     className={`
-      flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-[10px] rounded-xl border-2 transition-all duration-200
+      flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-[10px] rounded-xl border transition-all duration-200
       border-LineBox bg-NavigationBackground 
       focus-within:border-MainBlue 
       focus-within:shadow-[0_0_12px_rgba(25,120,229,0.25)]

@@ -75,6 +75,7 @@ const UserLayout = () => {
 import MyEvents from "./Modules/eventManagement/pages/MyEvents";
 import CreateEvent from "./Modules/eventManagement/pages/CreateEvent";
 import EventDashboard from "./Modules/eventManagement/pages/EventDashboard";
+import CheckInPage from "./Modules/checkin/pages/checkInPage.jsx";
 
 function App() {
   return (
@@ -90,6 +91,7 @@ function App() {
 
       <Route element={<UserLayout />}>
         <Route path="/dashboard/:id" element={<ManageWaitlist />} />
+        <Route path="/checkin/:id" element={<CheckInPage />} />
         {/* add more user routes here */}
       </Route>
       <Route path="/myevents" element={<MyEvents />} />
