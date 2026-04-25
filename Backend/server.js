@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import authRoutes from "./src/routes/authRoutes.js";
+import rsvpRoutes from "./src/routes/rsvpRoutes.js";
 import eventRoutes from "./src/routes/eventRoutes.js";
 import { initSocket } from "./src/socket.js";
 
@@ -25,11 +26,9 @@ app.use(express.json());
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/rsvp", rsvpRoutes);
 app.use("/api/events", eventRoutes);
 
-app.get("/", (req, res) => {
-  res.send("Backend is working!");
-});
 
 // Connect to MongoDB then start server
 await connectDB();

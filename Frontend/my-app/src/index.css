@@ -1,3 +1,43 @@
 @import "tailwindcss";
 /* If v4 doesn't automatically detect the config we point to it */
 @config "../tailwind.config.js";
+/* For webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1978e5; /* MainBlue */
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1565c0;
+}
+/* Custom checkbox */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #2a3a5c; /* LineBox color */
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+input[type="checkbox"]:checked {
+  background: #1978e5; /* MainBlue */
+  border-color: #1978e5;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.5 11.5L3 8l1.5-1.5L6.5 8.5l5-5L13 5l-6.5 6.5z'/%3E%3C/svg%3E");
+  background-size: cover;
+}
+
+input[type="checkbox"]:hover {
+  border-color: #1978e5;
+}

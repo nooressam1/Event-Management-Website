@@ -2,7 +2,8 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <div className="w-full h-21 border-t-2 border-LineBox px-5 py-7">
+    <div className="hidden md:block w-full h-21 border-t-2 bg-NavigationBackground border-LineBox px-10 py-7">
+      {" "}
       <h1 className="text-SecondOffWhiteText text-sm ">
         ©2024 EventHub Platform.
       </h1>
