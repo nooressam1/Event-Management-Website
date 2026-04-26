@@ -1,7 +1,6 @@
 import pfp from "../../../assets/pfp.png";
 import CustomButton from "../../shared/components/CustomButton";
 
-<<<<<<< HEAD:Frontend/my-app/src/Modules/checkin/component/checkInBoxGuest.jsx
 const checkInBoxGuest = ({
   name,
   id,
@@ -13,9 +12,6 @@ const checkInBoxGuest = ({
   onCheckIn,
   onUndo,
 }) => {
-=======
-const CheckInBoxGuest = ({ name, id, status, onCheckIn, disabled }) => {
->>>>>>> 3d98d2c6f6ea93f1f105654cd0380dc1c8c44fcf:Frontend/my-app/src/Modules/checkin/components/checkInBoxGuest.jsx
   return (
     <div
       className={`flex mb-3 flex-col sm:flex-row w-full justify-between sm:items-center rounded-lg border-2 py-4 px-5 gap-3 sm:gap-5 transition-all
