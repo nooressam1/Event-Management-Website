@@ -1,6 +1,7 @@
 import Event from "../../models/Event.js";
 import RSVP from "../../models/RSVP.js";
 import { EVENT_STATUS, RSVP_STATUS } from "../../models/enum.js";
+import { sendThankYou } from "../services/Notification_Service/notificationService.js";
 
 // POST /api/events
 export const createEvent = async (req, res) => {
@@ -16,6 +17,8 @@ export const createEvent = async (req, res) => {
       capacity,
       enableWaitlist,
       allowPlusOnes,
+      autoAccept,
+      isPublic,
       rsvpQuestions,
       status,
     } = req.body;
@@ -32,6 +35,8 @@ export const createEvent = async (req, res) => {
       capacity,
       enableWaitlist: enableWaitlist ?? false,
       allowPlusOnes: allowPlusOnes ?? false,
+      autoAccept: autoAccept ?? false,
+      isPublic: isPublic ?? false,
       rsvpQuestions: rsvpQuestions ?? [],
       status: status ?? EVENT_STATUS.DRAFT,
     });
@@ -61,6 +66,8 @@ export const updateEvent = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Event not found" });
 
+    const prevStatus = event.status;
+
     const fields = [
       "title",
       "shortDescription",
@@ -72,6 +79,8 @@ export const updateEvent = async (req, res) => {
       "capacity",
       "enableWaitlist",
       "allowPlusOnes",
+      "autoAccept",
+      "isPublic",
       "rsvpQuestions",
       "status",
     ];
@@ -85,6 +94,20 @@ export const updateEvent = async (req, res) => {
     }
 
     await event.save();
+
+    // Send thank-you emails to all confirmed attendees when event is marked completed
+    if (prevStatus !== EVENT_STATUS.COMPLETED && event.status === EVENT_STATUS.COMPLETED) {
+      RSVP.find({ eventId: event._id, status: RSVP_STATUS.ATTENDING })
+        .then((attendees) => {
+          attendees.forEach((rsvp) => {
+            sendThankYou(rsvp, event).catch((e) =>
+              console.error(`[Notification] Thank-you failed for ${rsvp.guestEmail}:`, e.message)
+            );
+          });
+        })
+        .catch((e) => console.error("[Notification] Could not fetch attendees for thank-you:", e.message));
+    }
+
     res.json({ success: true, event });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Calendar, MapPin, Edit2, Share2, Link2Off, ChevronDown, Trash2 } from "lucide-react";
+import { Calendar, MapPin, Edit2, Share2, Link2Off, ChevronDown, Trash2, Copy, Check } from "lucide-react";
 import MoreActionsMenu from "./MoreActionsMenu";
 
 const STATUS_BADGE = {
@@ -13,6 +13,7 @@ const INVITE_BASE = `${window.location.origin}/event/`;
 
 const EventHeader = ({ event, revoking, settingStatus, onEdit, onRevokeInvite, onSetStatus, onDeleteClick }) => {
   const [showMoreMenu, setShowMoreMenu] = useState(false);
+  const [showShareMenu, setShowShareMenu] = useState(false);
   const [shareToast, setShareToast] = useState(false);
 
   const statusInfo = STATUS_BADGE[event.status] ?? STATUS_BADGE.DRAFT;
@@ -27,17 +28,26 @@ const EventHeader = ({ event, revoking, settingStatus, onEdit, onRevokeInvite, o
     hour: "2-digit", minute: "2-digit",
   });
 
-  const handleShareInvite = async () => {
-    if (!event.inviteCode || !event.inviteLinkActive) return;
-    await navigator.clipboard.writeText(`${INVITE_BASE}${event.inviteCode}`);
+  const inviteLink = event.inviteCode ? `${INVITE_BASE}${event.inviteCode}` : null;
+
+  const handleCopyLink = async () => {
+    if (!inviteLink) return;
+    await navigator.clipboard.writeText(inviteLink);
     setShareToast(true);
+    setShowShareMenu(false);
     setTimeout(() => setShareToast(false), 2000);
   };
 
+  const handleWhatsApp = () => {
+    if (!inviteLink) return;
+    window.open(`https://wa.me/?text=${encodeURIComponent(`You're invited! Join here: ${inviteLink}`)}`, "_blank");
+    setShowShareMenu(false);
+  };
+
   return (
-    <div className="bg-NavigationBackground border border-LineBox rounded-2xl overflow-hidden mb-6">
+    <div className="bg-NavigationBackground border border-LineBox rounded-2xl mb-6">
       {event.coverImage && (
-        <div className="h-40 w-full relative">
+        <div className="h-40 w-full relative overflow-hidden rounded-t-2xl">
           <img src={event.coverImage} alt={event.title} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-NavigationBackground/90 to-transparent" />
         </div>
@@ -64,10 +74,10 @@ const EventHeader = ({ event, revoking, settingStatus, onEdit, onRevokeInvite, o
               <Calendar size={13} className="text-MainBlue shrink-0" />
               <span>{formattedDate} · {formattedTime}</span>
             </div>
-            {event.location && (
+            {event.location?.address && (
               <div className="flex items-center gap-1.5">
                 <MapPin size={13} className="text-MainBlue shrink-0" />
-                <span>{event.location}</span>
+                <span>{event.location.address}</span>
               </div>
             )}
           </div>
@@ -83,7 +93,7 @@ const EventHeader = ({ event, revoking, settingStatus, onEdit, onRevokeInvite, o
             Edit
           </button>
 
-          {event.inviteLinkActive ? (
+          {event.inviteLinkActive && (
             <button
               onClick={onRevokeInvite}
               disabled={revoking}
@@ -92,17 +102,40 @@ const EventHeader = ({ event, revoking, settingStatus, onEdit, onRevokeInvite, o
               <Link2Off size={13} />
               {revoking ? "Revoking..." : "Revoke Link"}
             </button>
-          ) : (
+          )}
+
+          <div className="relative">
             <button
-              onClick={handleShareInvite}
-              disabled={!event.inviteCode}
-              title={!event.inviteCode ? "Publish the event to generate an invite link" : "Copy invite link"}
+              onClick={() => setShowShareMenu((v) => !v)}
+              disabled={!inviteLink}
+              title={!inviteLink ? "Publish the event to generate an invite link" : "Share invite link"}
               className="flex items-center gap-2 px-4 py-2 bg-MainBlue hover:bg-blue-600 text-white rounded-lg text-sm font-semibold transition-colors disabled:opacity-40"
             >
-              <Share2 size={13} />
+              {shareToast ? <Check size={13} /> : <Share2 size={13} />}
               {shareToast ? "Copied!" : "Share Invite"}
             </button>
-          )}
+            {showShareMenu && (
+              <>
+                <div className="fixed inset-0 z-10" onClick={() => setShowShareMenu(false)} />
+                <div className="absolute right-0 mt-2 w-44 bg-NavigationBackground border border-LineBox rounded-xl shadow-xl z-20 overflow-hidden">
+                  <button
+                    onClick={handleCopyLink}
+                    className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-MainOffWhiteText hover:bg-MainBackground hover:text-white transition-colors"
+                  >
+                    <Copy size={13} />
+                    Copy Link
+                  </button>
+                  <button
+                    onClick={handleWhatsApp}
+                    className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-MainOffWhiteText hover:bg-MainBackground hover:text-white transition-colors"
+                  >
+                    <Share2 size={13} />
+                    Share on WhatsApp
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
 
           {!isTerminal && (
             <div className="relative">

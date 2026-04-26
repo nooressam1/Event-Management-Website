@@ -28,7 +28,7 @@ const InvitationPage = () => {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const showForm = invitationData?.rsvp?.status === "PENDING" || isEditing;
+  const showForm = (invitationData?.rsvp?.status === "PENDING" || isEditing) && !submitSuccess;
 
   useEffect(() => {
     const fetchInvitation = async () => {
@@ -80,7 +80,7 @@ const InvitationPage = () => {
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitError(null);
       try {
-        await axios.post(
+        const res = await axios.post(
           `${import.meta.env.VITE_API_URL}/api/rsvp/${id}/submit`,
           {
             fullname: values.fullname,
@@ -93,6 +93,7 @@ const InvitationPage = () => {
             }),
           },
         );
+        setInvitationData((prev) => ({ ...prev, rsvp: res.data.rsvp }));
         setSubmitSuccess(true);
       } catch (error) {
         setSubmitError(
@@ -215,7 +216,7 @@ const InvitationPage = () => {
                   </h1>
                 </div>
                 <p className="text-MainOffWhiteText font-inter text-sm">
-                  {invitationData.event.location}
+                  {invitationData.event.location?.address || "TBD"}
                 </p>
               </div>
 

@@ -7,6 +7,9 @@ import connectDB from "./config/db.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import rsvpRoutes from "./src/routes/rsvpRoutes.js";
 import eventRoutes from "./src/routes/eventRoutes.js";
+import inviteRoutes from "./src/routes/inviteRoutes.js";
+import publicRoutes from "./src/routes/publicRoutes.js";
+import analyticsRoutes from "./src/routes/analyticsRoutes.js";
 import { initSocket } from "./src/socket.js";
 
 dotenv.config();
@@ -28,6 +31,9 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/rsvp", rsvpRoutes);
 app.use("/api/events", eventRoutes);
+app.use("/api/invite", inviteRoutes);
+app.use("/api/public", publicRoutes);
+app.use("/api/analytics", analyticsRoutes);
 
 
 // Connect to MongoDB then start server

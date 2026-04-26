@@ -86,6 +86,14 @@ const eventSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    autoAccept: {
+      type: Boolean,
+      default: false,
+    },
+    isPublic: {
+      type: Boolean,
+      default: false,
+    },
     rsvpQuestions: [
       {
         label: { type: String, required: true },

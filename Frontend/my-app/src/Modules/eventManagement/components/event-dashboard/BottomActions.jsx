@@ -1,8 +1,11 @@
-import { ListChecks, Play, CheckCircle } from "lucide-react";
+import { ListChecks, Play, CheckCircle, BarChart3 } from "lucide-react";
 
-const BottomActions = ({ isDraft, isLive, starting, settingStatus, onStartEvent, onSetStatus }) => (
+const BottomActions = ({ isDraft, isLive, isCompleted, starting, settingStatus, onStartEvent, onSetStatus, onViewAnalytics, onManageWaitlist }) => (
   <div className="flex items-center gap-3 mt-6">
-    <button className="flex items-center gap-2 px-5 py-2.5 bg-MainBackground border border-LineBox hover:border-MainBlue/50 text-MainOffWhiteText hover:text-white rounded-lg text-sm font-semibold transition-colors">
+    <button
+      onClick={onManageWaitlist}
+      className="flex items-center gap-2 px-5 py-2.5 bg-MainBackground border border-LineBox hover:border-MainBlue/50 text-MainOffWhiteText hover:text-white rounded-lg text-sm font-semibold transition-colors"
+    >
       <ListChecks size={15} />
       Manage Waitlist
     </button>
@@ -26,6 +29,16 @@ const BottomActions = ({ isDraft, isLive, starting, settingStatus, onStartEvent,
       >
         <CheckCircle size={15} />
         {settingStatus ? "Updating..." : "Mark as Completed"}
+      </button>
+    )}
+
+    {isCompleted && (
+      <button
+        onClick={onViewAnalytics}
+        className="flex items-center gap-2 px-5 py-2.5 bg-MainBlue hover:bg-blue-600 text-white rounded-lg text-sm font-semibold transition-colors"
+      >
+        <BarChart3 size={15} />
+        View Analytics
       </button>
     )}
   </div>

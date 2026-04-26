@@ -1,184 +1,155 @@
-import {
-  ArrowBigDown,
-  ChevronDown,
-  ChevronUp,
-  CircleCheck,
-  Users,
-} from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useWaitlist } from "../../invitations/utils/waitlistHook";
-import CheckInBoxGuest from "../../checkin/component/checkInBoxGuest.jsx";
-import SearchBar from "../../shared/component/SearchBar.jsx";
-import CustomButton from "../../shared/component/CustomButton";
-import LivePulse from "../component/livePulse.jsx";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import useCheckIn from "../../Event_Creator_Suite_Service/hooks/useCheckIn";
+import EventSideBar from "../../Event_Creator_Suite_Service/components/EventSideBar";
+import Footer from "../../shared/component/Footer";
+import SearchBar from "../../shared/component/SearchBar";
+import CheckInBoxGuest from "../component/checkInBoxGuest";
+import LivePulse from "../component/livePulse";
 
-const checkInPage = () => {
+const FILTERS = [
+  { value: "all", label: "All" },
+  { value: "pending", label: "Pending" },
+  { value: "checkedIn", label: "Checked In" },
+];
+
+const CheckInPage = () => {
   const { id } = useParams();
+  const { event, attendees, loading, togglingId, checkedInCount, handleToggle } =
+    useCheckIn(id);
 
-  const timeAgo = (dateStr) => {
-    const diff = Math.floor((new Date() - new Date(dateStr)) / 1000);
-    if (diff < 60) return `${diff}s ago`;
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-    return `${Math.floor(diff / 86400)}d ago`;
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("all");
+  const [showFilter, setShowFilter] = useState(false);
+
+  const counts = {
+    all: attendees.length,
+    pending: attendees.filter((a) => !a.checkedIn).length,
+    checkedIn: checkedInCount,
   };
-  const {
-    rsvpInvitations,
-    eventInfo,
-    attending,
-    attendingCount,
-    checkedInCount,
-    isLoading,
-    recentActivity,
-    handleMoveToConfirmed,
-    handleDelete,
-  } = useWaitlist(id);
 
-  const [selectAll, setSelectAll] = useState(false);
-  const [selectedGuests, setSelectedGuests] = useState([]);
-  const [selectedOption, setSelectedOption] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showFilters, setShowFilters] = useState(false);
-const [statusFilter, setStatusFilter] = useState("all"); // "all" | "checkedIn" | "pending"
-  const filteredGuests = attending.filter((user) => {
-    const query = searchQuery.toLowerCase();
+  const filtered = attendees
+    .filter((a) => {
+      const q = search.toLowerCase();
+      return (
+        a.guestName?.toLowerCase().includes(q) ||
+        a.guestEmail?.toLowerCase().includes(q)
+      );
+    })
+    .filter((a) => {
+      if (filter === "pending") return !a.checkedIn;
+      if (filter === "checkedIn") return a.checkedIn;
+      return true;
+    });
+
+  if (loading) {
     return (
-      user.guestName?.toLowerCase().includes(query) ||
-      user.guestEmail?.toLowerCase().includes(query)
+      <div className="flex h-screen bg-MainBackground font-inter">
+        <EventSideBar event={null} activeItem="Check-In" />
+        <div className="flex-1 flex items-center justify-center">
+          <p className="text-SecondOffWhiteText text-sm">Loading...</p>
+        </div>
+      </div>
     );
-  });
+  }
 
   return (
-    <div className="flex flex-col gap-4 md:flex-row h-full  overflow-hidden">
-      {/* Left side */}
-      <div className="flex-1 flex flex-col min-h-0 gap-4">
-        <div className="flex flex-col  gap-5 md:flex-row justify-between items-center">
-          <div
-            className="w-full flex md:flex-col gap-2 flex-row items-center md:items-start  justify-between
-          "
-          >
-            <h1 className="text-white font-jakarta font-black text-lg">
-              Event Day Check-In
-            </h1>
-            <p className="text-MainOffWhiteText flex flex-row gap-2 font-inter text-sm">
-              {eventInfo?.event?.title}{" "}
-              <span className="hidden md:block">
-                • {eventInfo?.event?.location}
-              </span>
-            </p>
-          </div>
-        </div>
-        {/* Search + filter toggle */}
-        <div className="flex items-center gap-2  w-full">
-          <SearchBar
-            width="w-full"
-            onSearch={(value) => setSearchQuery(value)}
-          />
-          <button
-            className=" w-fit gap-2 flex flex-row text-MainOffWhiteText border bg-NavigationBackground border-LineBox rounded-lg px-3 py-[10px] text-sm hover:border-MainBlue hover:text-MainBlue transition-colors"
-            onClick={() => setShowFilters(!showFilters)}
-          >
-            <span className="whitespace-nowrap">All Status</span>
-            {showFilters ? (
-              <ChevronUp></ChevronUp>
-            ) : (
-              <ChevronDown></ChevronDown>
-            )}
-          </button>
-        </div>
-        <div className="flex flex-row justify-between items-center p-2">
-          <h1 className="text-white font-jakarta font-black text-md">
-            Attendee Directory
-          </h1>{" "}
-          <h1 className="text-MainOffWhiteText font-jakarta font-medium text-sm">
-            Showing {attending.length} total records
-          </h1>
-        </div>
-        {/* Scrollable guest list */}
-        <div className="flex-1 overflow-y-auto custom-scroll pr-2">
-          {isLoading ? (
-            <div className="flex flex-col gap-3">
-              {[...Array(4)].map((_, i) => (
-                <div
-                  key={i}
-                  className="h-16 rounded-lg bg-MainBlueBackground animate-pulse"
-                />
-              ))}
-            </div>
-          ) : filteredGuests.length === 0 ? (
-            <p className="text-MainOffWhiteText font-inter text-sm text-center py-10">
-              {searchQuery ? "No guests match your search." : "No guests yet."}
-            </p>
-          ) : (
-            filteredGuests.map((user) => (
-              <CheckInBoxGuest
-                key={user._id || user.guestEmail}
-                name={user.guestName}
-                id={user._id}
-                joinedTime={timeAgo(user.updatedAt)}
-                positionNum={user.waitlistPosition}
-                status={user.checkedIn}
-                onDelete={() => handleDelete(user._id, user.guestName)}
-                onCheckIn={() => ""}
-              />
-            ))
-          )}
-        </div>
-      </div>
+    <div className="flex h-screen overflow-hidden bg-MainBackground font-inter">
+      <EventSideBar event={event} activeItem="Check-In" />
 
-      {/* Right sidebar - hidden on mobile, visible on md+ */}
-      <div className="hidden md:flex flex-row w-[25%] gap-5 items-center justify-center sticky top-0">
-        <div className="flex flex-col w-full justify-between items-center gap-5">
-          <LivePulse
-            checkedIn={checkedInCount}
-            total={eventInfo?.event?.capacity}
-          ></LivePulse>
-          <div className="flex flex-row w-full justify-between border-dotted items-center rounded-lg bg-MainBlueBackground border-LineBox border-2 py-4 px-5 gap-5">
-            <div className="flex flex-col gap-3">
-              <h1 className="text-MainOffWhiteText font-inter uppercase font-medium text-sm">
-                Recent Activity
-              </h1>
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <main className="flex-1 overflow-y-auto p-8">
+          <div className="flex flex-col md:flex-row h-full gap-6">
 
-              {recentActivity.length === 0 ? (
-                <p className="text-MainOffWhiteText font-inter text-sm pl-3">
-                  No recent activity
+            {/* Left — attendee list */}
+            <div className="flex-1 flex flex-col min-h-0 gap-5">
+              <div>
+                <h1 className="text-white font-jakarta font-black text-xl">
+                  Event Day Check-In
+                </h1>
+                <p className="text-MainOffWhiteText font-inter text-sm mt-1">
+                  {event?.title}
                 </p>
-              ) : (
-                recentActivity.map((activity, i) => (
-                  <div key={i} className="flex gap-2 pl-3">
-                    {activity.type === "confirmed" ? (
-                      <Check
-                        className="text-MainGreen"
-                        size={20}
-                        strokeWidth={2}
-                      />
-                    ) : (
-                      <Trash
-                        className="text-red-400"
-                        size={20}
-                        strokeWidth={2}
-                      />
-                    )}
-                    <h1
-                      className={`font-inter font-normal text-sm ${activity.type === "confirmed" ? "text-white" : "text-red-400"}`}
+              </div>
+
+              {/* Search + filter toggle */}
+              <div className="flex gap-2">
+                <SearchBar width="w-full" onSearch={setSearch} />
+                <button
+                  onClick={() => setShowFilter((v) => !v)}
+                  className="flex items-center gap-2 shrink-0 border border-LineBox bg-NavigationBackground text-MainOffWhiteText text-sm rounded-lg px-3 py-2 hover:border-MainBlue hover:text-MainBlue transition-colors"
+                >
+                  <span className="whitespace-nowrap">
+                    {FILTERS.find((f) => f.value === filter)?.label} ({counts[filter]})
+                  </span>
+                  {showFilter ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                </button>
+              </div>
+
+              {/* Filter dropdown */}
+              {showFilter && (
+                <div className="flex gap-2 flex-wrap -mt-2">
+                  {FILTERS.map((f) => (
+                    <button
+                      key={f.value}
+                      onClick={() => { setFilter(f.value); setShowFilter(false); }}
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
+                        filter === f.value
+                          ? "bg-MainBlue/15 border-MainBlue text-white"
+                          : "border-LineBox text-MainOffWhiteText hover:border-MainBlue hover:text-white"
+                      }`}
                     >
-                      {activity.name} was{" "}
-                      {activity.type === "confirmed"
-                        ? "moved to confirmed"
-                        : "removed"}{" "}
-                      • {timeAgo(activity.time.toISOString())}
-                    </h1>
-                  </div>
-                ))
+                      {f.label} ({counts[f.value]})
+                    </button>
+                  ))}
+                </div>
               )}
+
+              <div className="flex justify-between items-center px-1">
+                <h2 className="text-white font-jakarta font-bold text-sm">
+                  Attendee Directory
+                </h2>
+                <span className="text-SecondOffWhiteText font-inter text-xs">
+                  Showing {filtered.length} of {attendees.length}
+                </span>
+              </div>
+
+              {/* List */}
+              <div className="flex-1 overflow-y-auto">
+                {filtered.length === 0 ? (
+                  <p className="text-SecondOffWhiteText font-inter text-sm text-center py-10">
+                    {search ? "No attendees match your search." : "No attendees found."}
+                  </p>
+                ) : (
+                  filtered.map((a) => (
+                    <CheckInBoxGuest
+                      key={a._id}
+                      id={a._id}
+                      name={a.guestName}
+                      status={a.checkedIn}
+                      onCheckIn={() => handleToggle(a._id)}
+                      disabled={togglingId === a._id}
+                    />
+                  ))
+                )}
+              </div>
             </div>
+
+            {/* Right — live stats */}
+            <div className="hidden md:flex flex-row w-[25%] gap-5 sticky top-0">
+              <div className="h-full w-0.5 bg-LineBox" />
+              <div className="w-full">
+                <LivePulse checkedIn={checkedInCount} total={event?.capacity} />
+              </div>
+            </div>
+
           </div>
-        </div>
+        </main>
+        <Footer />
       </div>
-      {/* Buttom mobile*/}
     </div>
   );
 };
 
-export default checkInPage;
+export default CheckInPage;

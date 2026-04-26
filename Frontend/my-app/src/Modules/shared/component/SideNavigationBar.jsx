@@ -1,54 +1,43 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Logo from "./Logo";
-import DashboardIcon from "../../../assets/DashboardIcon.png";
 import MyEventIcon from "../../../assets/MyEventIcon.png";
-import Attendees from "../../../assets/Attendees.png";
-import Reports from "../../../assets/Reports.png";
-import Bell from "../../../assets/Bell.png";
 import pfpExample from "../../../assets/pfpExample.png";
 import SideBarBox from "./SideBarBox";
 import { useAuth } from "../../auth/utils/AuthContext";
-import { Menu, X } from "lucide-react";
+import { Globe, Menu, X, LogOut, ChevronUp } from "lucide-react";
 
 const NAV_ITEMS = [
-  { title: "Dashboard", image: DashboardIcon },
-  { title: "My Events", image: MyEventIcon },
-  { title: "Attendees", image: Attendees },
-  { title: "Reports", image: Reports },
+  { title: "My Events", image: MyEventIcon, path: "/myevents" },
 ];
 
 const SideNavigationBar = ({ activeItem = "My Events" }) => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  };
 
   return (
     <>
-      {/* MOBILE TOP BAR  */}
-      <div className="md:hidden  flex items-center justify-between px-4 py-3 bg-NavigationBackground border-b border-LineBox w-full shrink-0">
+      {/* MOBILE TOP BAR */}
+      <div className="md:hidden flex items-center justify-between px-4 py-3 bg-NavigationBackground border-b border-LineBox w-full shrink-0">
         <div className="flex items-center gap-3">
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="text-white"
-          >
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-white">
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
-          <span className="text-white font-jakarta font-bold text-sm">
-            {activeItem}
-          </span>
+          <span className="text-white font-jakarta font-bold text-sm">{activeItem}</span>
         </div>
-        <div className="flex items-center gap-3">
-          <img src={Bell} className="w-4 h-4 opacity-70" alt="Notifications" />
-          <div className="w-8 h-8 rounded-lg overflow-hidden">
-            <img
-              className="h-full w-full object-cover"
-              src={user?.profileImage ?? pfpExample}
-              alt="Profile"
-            />
-          </div>
+        <div className="w-8 h-8 rounded-lg overflow-hidden cursor-pointer">
+          <img className="h-full w-full object-cover" src={user?.profileImage ?? pfpExample} alt="Profile" />
         </div>
       </div>
 
-      {/* MOBILE DROPDOWN MENU  */}
+      {/* MOBILE DROPDOWN */}
       {mobileMenuOpen && (
         <div className="md:hidden absolute top-[57px] left-0 right-0 z-50 bg-NavigationBackground border-b border-LineBox px-3 py-4 flex flex-col gap-1">
           {NAV_ITEMS.map((item) => (
@@ -57,13 +46,28 @@ const SideNavigationBar = ({ activeItem = "My Events" }) => {
               title={item.title}
               image={item.image}
               isActive={activeItem === item.title}
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={() => { setMobileMenuOpen(false); navigate(item.path); }}
             />
           ))}
+          <SideBarBox
+            title="Explore"
+            Icon={Globe}
+            isActive={activeItem === "Explore"}
+            onClick={() => { setMobileMenuOpen(false); navigate("/"); }}
+          />
+          <div className="border-t border-LineBox mt-2 pt-2">
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2.5 w-full px-3 py-2 text-sm text-MainOffWhiteText hover:text-MainRed transition-colors"
+            >
+              <LogOut size={13} />
+              Logout
+            </button>
+          </div>
         </div>
       )}
 
-      {/*  DESKTOP  */}
+      {/* DESKTOP */}
       <div className="hidden md:flex h-screen w-64 bg-NavigationBackground border-r border-LineBox flex-col shrink-0">
         <Logo />
         <nav className="flex-1 px-3 py-5 flex flex-col gap-1">
@@ -76,30 +80,58 @@ const SideNavigationBar = ({ activeItem = "My Events" }) => {
               title={item.title}
               image={item.image}
               isActive={activeItem === item.title}
+              onClick={() => navigate(item.path)}
             />
           ))}
+          <div className="mt-4 pt-4 border-t border-LineBox">
+            <h4 className="text-[10px] text-SecondOffWhiteText font-jakarta font-bold px-3 mb-2">
+              DISCOVER
+            </h4>
+            <SideBarBox
+              title="Explore"
+              Icon={Globe}
+              isActive={activeItem === "Explore"}
+              onClick={() => navigate("/")}
+            />
+          </div>
         </nav>
-        <div className="flex items-center justify-between px-5 py-4 border-t border-LineBox">
-          <div className="flex items-center gap-3">
+
+        {/* Profile with logout dropdown */}
+        <div className="relative border-t border-LineBox">
+          <button
+            onClick={() => setProfileOpen((v) => !v)}
+            className="flex items-center gap-3 w-full px-5 py-4 hover:bg-MainBlue/10 transition-colors"
+          >
             <div className="w-9 h-9 rounded-lg overflow-hidden shrink-0">
-              <img
-                className="h-full w-full object-cover"
-                src={user?.profileImage ?? pfpExample}
-                alt="Profile"
-              />
+              <img className="h-full w-full object-cover" src={user?.profileImage ?? pfpExample} alt="Profile" />
             </div>
-            <div className="flex flex-col">
-              <span className="text-white font-jakarta font-bold text-xs leading-tight">
+            <div className="flex flex-col flex-1 min-w-0 text-left">
+              <span className="text-white font-jakarta font-bold text-xs leading-tight truncate">
                 {user?.name ?? "User"}
               </span>
               <span className="text-SecondOffWhiteText font-jakarta text-[10px]">
                 Event Organizer
               </span>
             </div>
-          </div>
-          <div className="w-4 h-4 shrink-0 cursor-pointer opacity-70 hover:opacity-100 transition-opacity">
-            <img className="h-full w-full object-contain" src={Bell} alt="Notifications" />
-          </div>
+            <ChevronUp
+              size={13}
+              className={`text-SecondOffWhiteText shrink-0 transition-transform ${profileOpen ? "" : "rotate-180"}`}
+            />
+          </button>
+          {profileOpen && (
+            <>
+              <div className="fixed inset-0 z-10" onClick={() => setProfileOpen(false)} />
+              <div className="absolute bottom-full left-2 right-2 z-20 mb-1 bg-NavigationBackground border border-LineBox rounded-xl overflow-hidden shadow-xl">
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-MainOffWhiteText hover:bg-MainBackground hover:text-MainRed transition-colors"
+                >
+                  <LogOut size={13} />
+                  Logout
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </>

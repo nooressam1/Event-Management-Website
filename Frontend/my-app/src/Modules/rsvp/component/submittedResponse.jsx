@@ -127,7 +127,7 @@ const SubmittedResponse = ({ invitationData,onUpdateClick }) => {
 
           <EventDetails
             title="Location"
-            placeholdervalue={invitationData.event.location}
+            placeholdervalue={invitationData.event.location?.address || "TBD"}
             icon={Calendar}
           />
 
