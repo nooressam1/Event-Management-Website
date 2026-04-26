@@ -41,11 +41,6 @@ const GuestBox = ({
 
       {/* Right side */}
       <div className="flex flex-row gap-3 sm:gap-4 items-center sm:ml-auto shrink-0 pl-[calc(40px+12px+12px)] sm:pl-0">
-        <div className="border rounded-3xl px-3 sm:px-4 py-1.5 w-fit h-fit border-MainGreenLine text-MainGreen bg-MainGreenBackground">
-          <p className="font-inter font-medium text-xs sm:text-sm whitespace-nowrap">
-            Position #{positionNum}
-          </p>
-        </div>
         <Trash
           size={18}
           className="text-MainOffWhiteText cursor-pointer hover:text-red-400 transition-colors shrink-0"

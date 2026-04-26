@@ -23,6 +23,7 @@ router.post("/:id/submit", submitRsvp);
 router.use(protect);
 router.get("/:id/checkUser", getRSVPbyStatus);
 router.get("/:id/checkedIn", checkInUser);
+router.get("/:id/fetchCheckedUser", getRsvpCheckedInUsers);
 router.get("/:id/:status", getRSVPbyStatus);
 router.patch("/bulk-update", bulkUpdateStatus);
 router.patch("/:rsvpId/checkin", toggleCheckIn);

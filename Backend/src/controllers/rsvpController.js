@@ -11,15 +11,21 @@ import {
 const promoteFromWaitlist = async (eventId) => {
   const event = await Event.findById(eventId);
   if (!event) return;
-  const confirmedCount = await RSVP.countDocuments({ eventId, status: RSVP_STATUS.ATTENDING });
+  const confirmedCount = await RSVP.countDocuments({
+    eventId,
+    status: RSVP_STATUS.ATTENDING,
+  });
   if (confirmedCount >= event.capacity) return;
-  const next = await RSVP.findOne({ eventId, status: RSVP_STATUS.WAITLISTED }).sort({ waitlistPosition: 1 });
+  const next = await RSVP.findOne({
+    eventId,
+    status: RSVP_STATUS.WAITLISTED,
+  }).sort({ waitlistPosition: 1 });
   if (!next) return;
   next.status = RSVP_STATUS.ATTENDING;
   next.waitlistPosition = null;
   await next.save();
   sendAcceptance(next, event).catch((e) =>
-    console.error("[Waitlist] Promotion acceptance failed:", e.message)
+    console.error("[Waitlist] Promotion acceptance failed:", e.message),
   );
 };
 
@@ -44,7 +50,14 @@ export const submitRsvp = async (req, res) => {
     if (!rsvp) return res.status(404).json({ message: "Invitation not found" });
 
     const event = rsvp.eventId;
-    const { fullname, dietaryRequirements, rsvpStatus, plusOne, plusOneFullname, plusOneDietaryRequirements } = req.body;
+    const {
+      fullname,
+      dietaryRequirements,
+      rsvpStatus,
+      plusOne,
+      plusOneFullname,
+      plusOneDietaryRequirements,
+    } = req.body;
 
     rsvp.guestName = fullname;
     rsvp.dietaryNotes = dietaryRequirements || "";
@@ -65,19 +78,29 @@ export const submitRsvp = async (req, res) => {
 
       if (confirmedCount >= event.capacity) {
         if (event.enableWaitlist) {
-          const lastOnWaitlist = await RSVP.findOne({ eventId: event._id, status: RSVP_STATUS.WAITLISTED }).sort({ waitlistPosition: -1 });
+          const lastOnWaitlist = await RSVP.findOne({
+            eventId: event._id,
+            status: RSVP_STATUS.WAITLISTED,
+          }).sort({ waitlistPosition: -1 });
           rsvp.status = RSVP_STATUS.WAITLISTED;
           rsvp.waitlistPosition = (lastOnWaitlist?.waitlistPosition ?? 0) + 1;
         } else {
-          return res.status(409).json({ message: "This event is at full capacity." });
+          return res
+            .status(409)
+            .json({ message: "This event is at full capacity." });
         }
       } else {
-        rsvp.status = event.autoAccept ? RSVP_STATUS.ATTENDING : RSVP_STATUS.PENDING;
+        rsvp.status = event.autoAccept
+          ? RSVP_STATUS.ATTENDING
+          : RSVP_STATUS.PENDING;
         rsvp.waitlistPosition = null;
       }
 
       if (event.allowPlusOnes && plusOne) {
-        rsvp.plusOne = { name: plusOneFullname, dietaryNotes: plusOneDietaryRequirements || "" };
+        rsvp.plusOne = {
+          name: plusOneFullname,
+          dietaryNotes: plusOneDietaryRequirements || "",
+        };
       } else {
         rsvp.plusOne = null;
       }
@@ -88,16 +111,16 @@ export const submitRsvp = async (req, res) => {
     // If guest changed from ATTENDING to not going, promote next on waitlist
     if (wasAttending && rsvp.status !== RSVP_STATUS.ATTENDING) {
       promoteFromWaitlist(event._id).catch((e) =>
-        console.error("[Waitlist] Promotion failed:", e.message)
+        console.error("[Waitlist] Promotion failed:", e.message),
       );
     }
 
     sendRsvpConfirmation(rsvp, event).catch((e) =>
-      console.error("[Notification] RSVP confirmation failed:", e.message)
+      console.error("[Notification] RSVP confirmation failed:", e.message),
     );
     if (rsvp.status === RSVP_STATUS.ATTENDING) {
       sendAcceptance(rsvp, event).catch((e) =>
-        console.error("[Notification] Acceptance email failed:", e.message)
+        console.error("[Notification] Acceptance email failed:", e.message),
       );
     }
 
@@ -126,7 +149,10 @@ export const getRSVPbyStatus = async (req, res) => {
 export const getRsvpCheckedInUsers = async (req, res) => {
   const { id } = req.params;
   try {
-    const rsvps = await RSVP.find({ eventId: new mongoose.Types.ObjectId(id), checkedIn: true });
+    const rsvps = await RSVP.find({
+      eventId: new mongoose.Types.ObjectId(id),
+      checkedIn: true,
+    });
     res.status(200).json({ rsvps });
   } catch (err) {
     console.error("RSVP fetch error:", err);
@@ -134,11 +160,12 @@ export const getRsvpCheckedInUsers = async (req, res) => {
   }
 };
 export const checkInUser = async (req, res) => {
-  const { rsvpId, checkin } = req.body;
-
+  const { id } = req.params;
+  const { checkin } = req.body;
+  
   try {
     const rsvp = await RSVP.findByIdAndUpdate(
-      rsvpId,
+      id,
       { $set: { checkedIn: checkin } },
       { new: true },
     );
@@ -155,25 +182,39 @@ export const bulkUpdateStatus = async (req, res) => {
   try {
     const { rsvpIds, status } = req.body;
 
-    const before = await RSVP.find({ _id: { $in: rsvpIds } }).select("status eventId");
-    await RSVP.updateMany({ _id: { $in: rsvpIds } }, { $set: { status, waitlistPosition: null } });
+    const before = await RSVP.find({ _id: { $in: rsvpIds } }).select(
+      "status eventId",
+    );
+    await RSVP.updateMany(
+      { _id: { $in: rsvpIds } },
+      { $set: { status, waitlistPosition: null } },
+    );
 
     if (status === RSVP_STATUS.ATTENDING) {
-      const rsvps = await RSVP.find({ _id: { $in: rsvpIds } }).populate("eventId");
+      const rsvps = await RSVP.find({ _id: { $in: rsvpIds } }).populate(
+        "eventId",
+      );
       rsvps.forEach((rsvp) => {
         sendAcceptance(rsvp, rsvp.eventId).catch((e) =>
-          console.error(`[Notification] Acceptance failed for ${rsvp.guestEmail}:`, e.message)
+          console.error(
+            `[Notification] Acceptance failed for ${rsvp.guestEmail}:`,
+            e.message,
+          ),
         );
       });
     }
 
     // If any ATTENDING guests were moved away, try to promote from waitlist
     if (status === RSVP_STATUS.DECLINED) {
-      const attendingBefore = before.filter((r) => r.status === RSVP_STATUS.ATTENDING);
-      const uniqueEventIds = [...new Set(attendingBefore.map((r) => r.eventId.toString()))];
+      const attendingBefore = before.filter(
+        (r) => r.status === RSVP_STATUS.ATTENDING,
+      );
+      const uniqueEventIds = [
+        ...new Set(attendingBefore.map((r) => r.eventId.toString())),
+      ];
       uniqueEventIds.forEach((eventId) => {
         promoteFromWaitlist(eventId).catch((e) =>
-          console.error("[Waitlist] Promotion failed:", e.message)
+          console.error("[Waitlist] Promotion failed:", e.message),
         );
       });
     }
@@ -191,11 +232,16 @@ export const updateRsvpStatus = async (req, res) => {
     const { status } = req.body;
 
     if (!Object.values(RSVP_STATUS).includes(status)) {
-      return res.status(400).json({ success: false, message: "Invalid status" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid status" });
     }
 
     const rsvp = await RSVP.findById(rsvpId).populate("eventId");
-    if (!rsvp) return res.status(404).json({ success: false, message: "RSVP not found" });
+    if (!rsvp)
+      return res
+        .status(404)
+        .json({ success: false, message: "RSVP not found" });
 
     const prevStatus = rsvp.status;
     rsvp.status = status;
@@ -204,13 +250,16 @@ export const updateRsvpStatus = async (req, res) => {
 
     if (status === RSVP_STATUS.ATTENDING) {
       sendAcceptance(rsvp, rsvp.eventId).catch((e) =>
-        console.error("[Notification] Acceptance failed:", e.message)
+        console.error("[Notification] Acceptance failed:", e.message),
       );
     }
 
-    if (prevStatus === RSVP_STATUS.ATTENDING && status !== RSVP_STATUS.ATTENDING) {
+    if (
+      prevStatus === RSVP_STATUS.ATTENDING &&
+      status !== RSVP_STATUS.ATTENDING
+    ) {
       promoteFromWaitlist(rsvp.eventId._id).catch((e) =>
-        console.error("[Waitlist] Promotion failed:", e.message)
+        console.error("[Waitlist] Promotion failed:", e.message),
       );
     }
 
@@ -240,11 +289,14 @@ export const deleteRsvp = async (req, res) => {
   try {
     const { rsvpId } = req.params;
     const rsvp = await RSVP.findByIdAndDelete(rsvpId);
-    if (!rsvp) return res.status(404).json({ success: false, message: "RSVP not found" });
+    if (!rsvp)
+      return res
+        .status(404)
+        .json({ success: false, message: "RSVP not found" });
 
     if (rsvp.status === RSVP_STATUS.ATTENDING) {
       promoteFromWaitlist(rsvp.eventId).catch((e) =>
-        console.error("[Waitlist] Promotion failed:", e.message)
+        console.error("[Waitlist] Promotion failed:", e.message),
       );
     }
 
