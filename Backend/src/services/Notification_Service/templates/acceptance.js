@@ -82,7 +82,7 @@ export const acceptanceTemplate = ({ rsvp, event }) => `
                 </tr>
               </table>` : ""}
 
-              ${event.coverImage ? `<p style="color:#64748b;font-size:13px;margin:0;">The event flyer is attached to this email. Save the date!</p>` : ""}
+              ${(event.suiteData?.flyerImageBase64 || event.coverImage) ? `<p style="color:#64748b;font-size:13px;margin:0;">The event flyer is attached to this email. Save the date!</p>` : ""}
             </td>
           </tr>
 

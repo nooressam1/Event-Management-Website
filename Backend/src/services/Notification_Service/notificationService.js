@@ -63,7 +63,17 @@ export const sendRsvpConfirmation = async (rsvp, event) => {
 
 export const sendAcceptance = async (rsvp, event) => {
   const attachments = [];
-  if (event.coverImage && event.coverImage.startsWith("http")) {
+
+  if (event.suiteData?.flyerImageBase64) {
+    // Flyer Builder PNG exported by the organizer — preferred over raw coverImage
+    const raw = event.suiteData.flyerImageBase64.replace(/^data:image\/\w+;base64,/, "");
+    attachments.push({
+      filename: `${(event.title || "flyer").replace(/[^a-z0-9]/gi, "-")}-flyer.png`,
+      content: Buffer.from(raw, "base64"),
+      contentType: "image/png",
+    });
+  } else if (event.coverImage?.startsWith("http")) {
+    // Fallback: organizer's cover image URL
     attachments.push({ filename: "event-flyer.jpg", path: event.coverImage });
   }
 

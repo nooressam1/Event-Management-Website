@@ -28,6 +28,7 @@ const CreateEvent = () => {
     initializing,
     goToStep1,
     goToStep2,
+    backToStep2,
     saveDraft,
     publishAndFinish,
     finishAndDashboard,
@@ -79,12 +80,12 @@ const CreateEvent = () => {
           <div className="flex items-center justify-between mt-10 pt-6 border-t border-LineBox">
             {/* Back */}
             <div>
-              {step === 2 && (
+              {(step === 2 || step === 3) && (
                 <CustomButton
                   title="Back"
                   icon={ArrowLeft}
                   iconPosition="LEFT"
-                  onClick={goToStep1}
+                  onClick={step === 2 ? goToStep1 : backToStep2}
                   className="text-MainOffWhiteText hover:text-white text-sm"
                 />
               )}

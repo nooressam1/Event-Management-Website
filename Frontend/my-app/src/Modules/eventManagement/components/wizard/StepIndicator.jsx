@@ -1,4 +1,6 @@
 import React from "react";
+import { ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const STEPS = [
   { label: "Create New Event", next: "Capacity & Logic" },
@@ -7,11 +9,21 @@ const STEPS = [
 ];
 
 const StepIndicator = ({ step, isEditing = false }) => {
+  const navigate = useNavigate();
   const meta = STEPS[step - 1];
   const progress = Math.round((step / 3) * 100);
 
   return (
     <div className="border-b border-LineBox px-8 py-5 shrink-0">
+      {step === 1 && (
+        <button
+          onClick={() => navigate("/myevents")}
+          className="flex items-center gap-2 text-SecondOffWhiteText hover:text-white text-sm mb-4 transition-colors"
+        >
+          <ArrowLeft size={15} />
+          Back to My Events
+        </button>
+      )}
       <div className="flex justify-between items-start mb-3">
         <div>
           <p className="text-MainBlue text-[11px] font-bold uppercase tracking-widest mb-1">

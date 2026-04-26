@@ -1,83 +1,107 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { Calendar, Clock, MapPin, ArrowLeft } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Calendar, Clock, MapPin } from "lucide-react";
+import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import GuestViewPreview from "./GuestViewPreview";
 import FieldLabel from "../primitives/FieldLabel";
 import LabeledInput from "../../../shared/components/LabeledInput";
 
-const MapPlaceholder = ({ location }) => (
-  <div className="mt-3 h-44 bg-MainBackground rounded-xl border border-LineBox overflow-hidden relative">
-    <svg
-      className="absolute inset-0 w-full h-full opacity-[0.07]"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {[...Array(10)].map((_, i) => (
-        <line
-          key={`h${i}`}
-          x1="0"
-          y1={`${(i + 1) * 10}%`}
-          x2="100%"
-          y2={`${(i + 1) * 10}%`}
-          stroke="#94A3B8"
-          strokeWidth="1"
-        />
-      ))}
-      {[...Array(16)].map((_, i) => (
-        <line
-          key={`v${i}`}
-          x1={`${(i + 1) * 6.25}%`}
-          y1="0"
-          x2={`${(i + 1) * 6.25}%`}
-          y2="100%"
-          stroke="#94A3B8"
-          strokeWidth="1"
-        />
-      ))}
-      <line
-        x1="20%"
-        y1="0"
-        x2="60%"
-        y2="100%"
-        stroke="#94A3B8"
-        strokeWidth="1.5"
-      />
-      <line
-        x1="80%"
-        y1="0"
-        x2="30%"
-        y2="100%"
-        stroke="#94A3B8"
-        strokeWidth="1.5"
-      />
-    </svg>
-    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-      <div className="w-8 h-8 rounded-full bg-MainBlue/20 flex items-center justify-center">
-        <MapPin size={18} className="text-MainBlue" />
-      </div>
-      {location ? (
-        <span className="bg-NavigationBackground/90 text-white text-xs px-3 py-1 rounded-lg border border-LineBox max-w-[80%] truncate">
-          {location}
-        </span>
-      ) : (
-        <span className="text-SecondOffWhiteText text-xs">
-          Enter a location above to preview
-        </span>
-      )}
+const MapUpdater = ({ coords }) => {
+  const map = useMap();
+  useEffect(() => {
+    map.setView(coords, 15);
+  }, [coords, map]);
+  return null;
+};
+
+const LocationPreview = ({ location }) => {
+  const [coords, setCoords] = useState(null);
+  const [status, setStatus] = useState("idle"); // idle | loading | found | notfound
+  const debounceRef = useRef(null);
+
+  useEffect(() => {
+    if (!location?.trim()) {
+      setCoords(null);
+      setStatus("idle");
+      return;
+    }
+    setStatus("loading");
+    clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(async () => {
+      try {
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(location)}&format=json&limit=1`,
+          { headers: { "Accept-Language": "en" } }
+        );
+        const data = await res.json();
+        if (data.length > 0) {
+          setCoords([parseFloat(data[0].lat), parseFloat(data[0].lon)]);
+          setStatus("found");
+        } else {
+          setCoords(null);
+          setStatus("notfound");
+        }
+      } catch {
+        setCoords(null);
+        setStatus("notfound");
+      }
+    }, 700);
+    return () => clearTimeout(debounceRef.current);
+  }, [location]);
+
+  const shell = (children) => (
+    <div className="mt-3 h-44 bg-MainBackground rounded-xl border border-LineBox flex items-center justify-center">
+      {children}
     </div>
-  </div>
-);
+  );
+
+  if (status === "idle")
+    return shell(
+      <span className="text-SecondOffWhiteText text-xs">
+        Enter a location above to preview on map
+      </span>
+    );
+
+  if (status === "loading")
+    return shell(
+      <span className="text-SecondOffWhiteText text-xs animate-pulse">
+        Looking up location…
+      </span>
+    );
+
+  if (status === "notfound")
+    return shell(
+      <div className="flex flex-col items-center gap-1">
+        <MapPin size={18} className="text-SecondOffWhiteText" />
+        <span className="text-SecondOffWhiteText text-xs">Location not found on map</span>
+      </div>
+    );
+
+  return (
+    <div
+      className="mt-3 rounded-xl overflow-hidden border border-LineBox"
+      style={{ height: "176px" }}
+    >
+      <MapContainer
+        center={coords}
+        zoom={15}
+        style={{ height: "100%", width: "100%" }}
+        zoomControl={false}
+        scrollWheelZoom={false}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; OpenStreetMap contributors'
+        />
+        <Marker position={coords} />
+        <MapUpdater coords={coords} />
+      </MapContainer>
+    </div>
+  );
+};
+
 const Step1EventDetails = ({ formData, updateField }) => {
-  const navigate = useNavigate();
   return (
   <div>
-    <button
-      onClick={() => navigate("/myevents")}
-      className="flex items-center gap-2 text-SecondOffWhiteText hover:text-white text-sm mb-6 transition-colors"
-    >
-      <ArrowLeft size={15} />
-      Back to My Events
-    </button>
-
     <div className="flex flex-col lg:flex-row gap-8">
     <div className="flex-1 space-y-6 min-w-0">
       <LabeledInput
@@ -128,7 +152,7 @@ const Step1EventDetails = ({ formData, updateField }) => {
           value={formData.location}
           onChange={(e) => updateField("location", e.target.value)}
         />
-        <MapPlaceholder location={formData.location} />
+        <LocationPreview location={formData.location} />
       </div>
 
       <div>

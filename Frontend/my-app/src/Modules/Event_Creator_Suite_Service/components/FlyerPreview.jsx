@@ -23,7 +23,7 @@ const TEMPLATE_MAP = {
   minimal: TemplateMinimal,
 };
 
-const FlyerPreview = ({ fields, template, onTemplateChange, eventTitle }) => {
+const FlyerPreview = ({ fields, template, onTemplateChange, eventTitle, onExported }) => {
   const flyerRef = useRef(null);
   const TemplateComponent = TEMPLATE_MAP[template] ?? TemplateModern;
 
@@ -35,10 +35,13 @@ const FlyerPreview = ({ fields, template, onTemplateChange, eventTitle }) => {
         useCORS: true,
         backgroundColor: null,
       });
+      const dataUrl = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.download = `${eventTitle || "flyer"}.png`;
-      link.href = canvas.toDataURL("image/png");
+      link.href = dataUrl;
       link.click();
+      // Notify parent so the Base64 can be persisted for email attachments
+      onExported?.(dataUrl);
     } catch (err) {
       console.error("Export failed:", err);
     }

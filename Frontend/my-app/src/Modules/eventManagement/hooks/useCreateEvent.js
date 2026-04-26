@@ -107,6 +107,11 @@ const useCreateEvent = (editEventId = null) => {
     setStep(1);
   };
 
+  const backToStep2 = () => {
+    setError(null);
+    setStep(2);
+  };
+
   const saveDraft = async () => {
     const err = validate(1, formData);
     if (err) {
@@ -175,6 +180,7 @@ const useCreateEvent = (editEventId = null) => {
     initializing,
     goToStep1,
     goToStep2,
+    backToStep2,
     saveDraft,
     publishAndFinish,
     finishAndDashboard,

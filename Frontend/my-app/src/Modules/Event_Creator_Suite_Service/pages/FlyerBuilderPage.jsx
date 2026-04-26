@@ -87,6 +87,18 @@ const FlyerBuilderPage = ({ event, onSuiteDataSaved }) => {
           template={template}
           onTemplateChange={handleTemplateChange}
           eventTitle={fields.title}
+          onExported={(dataUrl) => {
+            if (!event?._id) return;
+            // Save both the settings and the captured Base64 in one atomic write.
+            // With the per-key $set fix on the backend this will never clobber
+            // other suiteData keys (event plan, rsvpQuestions).
+            saveSuiteData(event._id, {
+              flyerSettings: { fields, template },
+              flyerImageBase64: dataUrl,
+            })
+              .then(() => onSuiteDataSaved?.({ flyerSettings: { fields, template } }))
+              .catch(console.error);
+          }}
         />
       </div>
     </div>

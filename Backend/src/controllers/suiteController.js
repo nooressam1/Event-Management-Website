@@ -162,12 +162,16 @@ export const generateRsvpQuestions = async (req, res) => {
 // ─── Suite Data (plan, rsvpQuestions, flyerSettings on event doc) ─────────────
 
 // PATCH /api/events/:id/suite-data
+// Merges keys into suiteData individually — never overwrites unrelated keys
 export const saveSuiteData = async (req, res) => {
   try {
-    const allowed = ["suiteData"];
+    const updates = {};
+    for (const key of Object.keys(req.body)) {
+      updates[`suiteData.${key}`] = req.body[key];
+    }
     const event = await Event.findOneAndUpdate(
       { _id: req.params.id, organizer: req.user.id },
-      { $set: { suiteData: req.body } },
+      { $set: updates },
       { new: true }
     );
     if (!event) return res.status(404).json({ success: false, message: "Event not found" });
