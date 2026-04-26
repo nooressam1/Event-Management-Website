@@ -3,12 +3,13 @@ import {
   getRsvp,
   submitRsvp,
   getRSVPbyStatus,
-  rsvpCheckedInUsers,
+  // rsvpCheckedInUsers,
   bulkUpdateStatus,
   updateRsvpStatus,
   deleteRsvp,
   getRsvpCheckedInUsers,
-  checkInUser
+  checkInUser,
+  toggleCheckIn,
 } from "../controllers/rsvpController.js";
 import { protect } from "../middleware/authMiddleware.js";
 

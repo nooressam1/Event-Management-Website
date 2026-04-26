@@ -1,7 +1,7 @@
 import pfp from "../../../assets/pfp.png";
 import CustomButton from "../../shared/components/CustomButton";
 
-const checkInBoxGuest = ({
+const CheckInBoxGuest = ({
   name,
   id,
   email,

@@ -110,11 +110,7 @@ export const useWaitlist = (id, status = "ATTENDING") => {
       console.log(error);
     }
   };
-  const addActivity = (name, type) => {
-    setRecentActivity((prev) =>
-      [{ name, type, time: new Date() }, ...prev].slice(0, 5),
-    );
-  };
+
   const handleDelete = async (guestId, guestName) => {
     try {
       await axios.delete(

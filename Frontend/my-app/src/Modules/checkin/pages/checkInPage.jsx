@@ -5,7 +5,7 @@ import useCheckIn from "../../Event_Creator_Suite_Service/hooks/useCheckIn";
 import EventSideBar from "../../Event_Creator_Suite_Service/components/EventSideBar";
 import Footer from "../../shared/components/Footer";
 import SearchBar from "../../shared/components/SearchBar";
-import CheckInBoxGuest from "../components/checkInBoxGuest";
+import CheckInBoxGuest from "../components/checkInBoxGuest.jsx";
 import LivePulse from "../components/livePulse";
 
 const FILTERS = [

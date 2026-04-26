@@ -102,7 +102,7 @@ const manageAttendees = () => {
           </div>
 
           <div className="md:hidden w-full flex flex-col gap-5">
-            {/* <StatCard
+            <StatCard
               label="Capacity left"
               value={eventInfo?.event?.capacity - attendingCount}
               color="blue"
@@ -112,7 +112,7 @@ const manageAttendees = () => {
                 current={attendingCount}
                 total={eventInfo?.event?.capacity}
               />
-            </StatCard> */}
+            </StatCard>
           </div>
 
           {/* Search + filter toggle */}
