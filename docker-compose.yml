@@ -1,3 +1,24 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# DEPLOYMENT NOTES
+#
+# Vercel (frontend — recommended):
+#   1. Push to GitHub and connect the repo in the Vercel dashboard.
+#   2. Set root directory to Frontend/my-app (or use a vercel.json).
+#   3. Add env var VITE_API_URL pointing at your backend (e.g. https://api.yourdomain.com).
+#   Vercel builds automatically via `npm run build` — no Dockerfile needed.
+#
+# Azure (backend — Container Instance or App Service):
+#   docker build -t eventhub-backend ./Backend
+#   docker tag eventhub-backend <acr-name>.azurecr.io/eventhub-backend:latest
+#   docker push <acr-name>.azurecr.io/eventhub-backend:latest
+#   Then deploy the image as an Azure Container Instance or App Service (Container).
+#   Required env vars: MONGO_URI, JWT_SECRET, PORT, FRONTEND_URL,
+#                      SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, SMTP_PASS, EMAIL_FROM_NAME
+#
+# This docker-compose.yml is for LOCAL full-stack testing only.
+# MongoDB is hosted on Atlas — no local db container needed.
+# ─────────────────────────────────────────────────────────────────────────────
+
 services:
   backend:
     build:

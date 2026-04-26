@@ -20,7 +20,7 @@ const PORT = process.env.PORT;
 // Middlewares
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
     credentials: true,
   })
 );
@@ -35,6 +35,9 @@ app.use("/api/invite", inviteRoutes);
 app.use("/api/public", publicRoutes);
 app.use("/api/analytics", analyticsRoutes);
 
+
+// Health check
+app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
 // Connect to MongoDB then start server
 await connectDB();
