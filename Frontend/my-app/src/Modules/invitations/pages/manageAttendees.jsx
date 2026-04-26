@@ -9,6 +9,8 @@ import { useParams } from "react-router-dom";
 import { SlidersHorizontal } from "lucide-react";
 import { useWaitlist } from "../hooks/useWaitlist";
 import ManageAttendeesStats from "../components/ManageAttendeesStats";
+import EventSideBar from "../../Event_Creator_Suite_Service/components/EventSideBar";
+import Footer from "../../shared/components/Footer";
 
 const manageAttendees = () => {
   const { id } = useParams();
@@ -79,6 +81,10 @@ const manageAttendees = () => {
   const actionLabel = "Move to Confirm";
 
   return (
+    <div className="flex h-screen overflow-hidden bg-MainBackground font-inter">
+      <EventSideBar event={eventInfo?.event} activeItem="Attendees" />
+      <div className="flex-1 flex flex-col overflow-hidden">
+      <main className="flex-1 overflow-y-auto p-8">
     <div className="flex flex-col md:flex-row h-full gap-6 overflow-hidden">
       {/* Left side */}
       <div className="flex-1 flex flex-col min-h-0">
@@ -90,13 +96,13 @@ const manageAttendees = () => {
             <p className="text-MainOffWhiteText flex flex-row gap-2 font-inter text-sm">
               {eventInfo?.event?.title}{" "}
               <span className="hidden md:block">
-                • {eventInfo?.event?.location}
+                {/* • {eventInfo?.event?.location} */}
               </span>
             </p>
           </div>
 
           <div className="md:hidden w-full flex flex-col gap-5">
-            <StatCard
+            {/* <StatCard
               label="Capacity left"
               value={eventInfo?.event?.capacity - attendingCount}
               color="blue"
@@ -106,7 +112,7 @@ const manageAttendees = () => {
                 current={attendingCount}
                 total={eventInfo?.event?.capacity}
               />
-            </StatCard>
+            </StatCard> */}
           </div>
 
           {/* Search + filter toggle */}
@@ -200,7 +206,12 @@ const manageAttendees = () => {
         attendingCount={attendingCount}
         selectedGuests={selectedGuests}
         actionLabel={actionLabel}
-        onAction={() => handleMoveToConfirmed(selectedGuests, () => { setSelectedGuests([]); setSelectAll(false); })}
+        onAction={() =>
+          handleMoveToConfirmed(selectedGuests, () => {
+            setSelectedGuests([]);
+            setSelectAll(false);
+          })
+        }
         recentActivity={recentActivity}
       />
 
@@ -218,6 +229,10 @@ const manageAttendees = () => {
           }
           className="bg-MainBlue px-8 py-4 text-sm text-white rounded-lg w-full"
         />
+      </div>
+    </div>
+      </main>
+      <Footer />
       </div>
     </div>
   );

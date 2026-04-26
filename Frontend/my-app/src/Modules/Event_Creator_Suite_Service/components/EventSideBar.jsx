@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LayoutDashboard, Users, ScanLine, BarChart3, Play, CheckCircle, LogOut, ChevronUp, Menu, X } from "lucide-react";
+import { LayoutDashboard, Users, ScanLine, BarChart3, Play, CheckCircle, LogOut, ChevronUp, Menu, X, Globe, Edit2 } from "lucide-react";
 import { useAuth } from "../../auth/context/AuthContext";
 import Logo from "../../shared/components/Logo";
 import pfpExample from "../../../assets/pfpExample.png";
@@ -43,6 +43,7 @@ const EventSideBar = ({
   const isDraft     = event?.status === "DRAFT";
   const isLive      = event?.status === "PUBLISHED";
   const isCompleted = event?.status === "COMPLETED";
+  const isEditable  = isDraft || isLive;
   const statusInfo  = STATUS_BADGE[event?.status] ?? STATUS_BADGE.DRAFT;
 
   const handleLogout = async () => {
@@ -54,10 +55,13 @@ const EventSideBar = ({
     <>
       <NavLink icon={LayoutDashboard} label="Overview"         active={activeItem === "Overview"}   onClick={() => { navigate(`/events/${id}`); setMobileOpen(false); }} />
       <NavLink icon={Users}           label="Manage Attendees" active={activeItem === "Attendees"}  onClick={() => { navigate(`/dashboard/${id}`); setMobileOpen(false); }} />
+      {isEditable && (
+        <NavLink icon={Edit2} label="Edit Event" active={activeItem === "Edit"} onClick={() => { navigate(`/events/${id}/edit`); setMobileOpen(false); }} />
+      )}
       {isLive && (
         <NavLink icon={ScanLine} label="Check-In" active={activeItem === "Check-In"} onClick={() => { navigate(`/checkin/${id}`); setMobileOpen(false); }} />
       )}
-      {isCompleted && (
+      {(isLive || isCompleted) && (
         <NavLink icon={BarChart3} label="Analytics" active={activeItem === "Analytics"} onClick={() => { navigate(`/events/${id}/analytics`); setMobileOpen(false); }} />
       )}
     </>
@@ -98,6 +102,9 @@ const EventSideBar = ({
               )}
             </div>
           )}
+          <div className="mt-3 pt-3 border-t border-LineBox">
+            <NavLink icon={Globe} label="Explore Events" active={activeItem === "Explore"} onClick={() => { navigate("/"); setMobileOpen(false); }} />
+          </div>
           <div className="mt-2 pt-2 border-t border-LineBox">
             <button onClick={handleLogout} className="flex items-center gap-2.5 w-full px-3 py-2 text-sm text-MainOffWhiteText hover:text-MainRed transition-colors">
               <LogOut size={13} />Logout
@@ -140,6 +147,10 @@ const EventSideBar = ({
               )}
             </div>
           )}
+          <div className="mt-4 pt-4 border-t border-LineBox">
+            <h4 className="text-[10px] text-SecondOffWhiteText font-jakarta font-bold px-3 mb-2">DISCOVER</h4>
+            <NavLink icon={Globe} label="Explore Events" active={activeItem === "Explore"} onClick={() => navigate("/")} />
+          </div>
         </nav>
 
         <div className="relative border-t border-LineBox">

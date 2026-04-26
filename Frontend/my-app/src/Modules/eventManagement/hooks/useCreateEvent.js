@@ -32,7 +32,7 @@ const buildPayload = (formData, status) => {
     coverImage: formData.coverImage,
     date,
     time: formData.time,
-    location: formData.location,
+    location: { address: formData.location },
     capacity: Number(formData.capacity),
     enableWaitlist: formData.enableWaitlist,
     allowPlusOnes: formData.allowPlusOnes,

@@ -64,10 +64,10 @@ const EventHeader = ({ event, revoking, settingStatus, onEdit, onRevokeInvite, o
               <Calendar size={13} className="text-MainBlue shrink-0" />
               <span>{formattedDate} · {formattedTime}</span>
             </div>
-            {event.location && (
+            {event.location?.address && (
               <div className="flex items-center gap-1.5">
                 <MapPin size={13} className="text-MainBlue shrink-0" />
-                <span>{event.location}</span>
+                <span>{event.location.address}</span>
               </div>
             )}
           </div>
