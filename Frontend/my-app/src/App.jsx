@@ -9,6 +9,7 @@ import EventDashboard from "./Modules/eventManagement/pages/EventDashboard";
 import CheckInPage from "./Modules/checkin/pages/checkInPage.jsx";
 import ManageWaitlist from "./Modules/invitations/pages/manageAttendees";
 import Homepage from "./Modules/Event_Creator_Suite_Service/pages/Homepage";
+import SuitePage from "./Modules/Event_Creator_Suite_Service/pages/SuitePage";
 import EventAnalytics from "./Modules/analytics/pages/EventAnalytics";
 import SideNavigationBar from "./Modules/shared/components/SideNavigationBar";
 import Footer from "./Modules/shared/components/Footer";
@@ -101,6 +102,7 @@ function App() {
       <Route path="/events/:id" element={<EventDashboard />} />
       <Route path="/events/:id/edit" element={<CreateEvent />} />
       <Route path="/events/:id/analytics" element={<EventAnalytics />} />
+      <Route path="/events/:id/suite" element={<SuitePage />} />
     </Routes>
   );
 }

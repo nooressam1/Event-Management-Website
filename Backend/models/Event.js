@@ -105,6 +105,11 @@ const eventSchema = new mongoose.Schema(
         required: { type: Boolean, default: false },
       },
     ],
+    suiteData: {
+      plan:          { type: String, default: "" },
+      rsvpQuestions: { type: mongoose.Schema.Types.Mixed, default: null },
+      flyerSettings: { type: mongoose.Schema.Types.Mixed, default: null },
+    },
   },
   {
     timestamps: true,

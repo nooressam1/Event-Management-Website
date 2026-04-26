@@ -10,6 +10,7 @@ import eventRoutes from "./src/routes/eventRoutes.js";
 import inviteRoutes from "./src/routes/inviteRoutes.js";
 import publicRoutes from "./src/routes/publicRoutes.js";
 import analyticsRoutes from "./src/routes/analyticsRoutes.js";
+import suiteRoutes from "./src/routes/suiteRoutes.js";
 import { initSocket } from "./src/socket.js";
 
 dotenv.config();
@@ -34,6 +35,7 @@ app.use("/api/events", eventRoutes);
 app.use("/api/invite", inviteRoutes);
 app.use("/api/public", publicRoutes);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/suite", suiteRoutes);
 
 
 // Health check

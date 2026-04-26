@@ -13,6 +13,7 @@ import {
   startEvent,
   exportAttendees,
 } from "../controllers/eventActionsController.js";
+import { saveSuiteData } from "../controllers/suiteController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -30,5 +31,6 @@ router.get("/:id/attendees", getEventAttendees);
 router.get("/:id/export", exportAttendees);
 router.post("/:id/start", startEvent);
 router.post("/:id/revoke-invite", revokeInviteLink);
+router.patch("/:id/suite-data", saveSuiteData);
 
 export default router;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LayoutDashboard, Users, ScanLine, BarChart3, Play, CheckCircle, LogOut, ChevronUp, Menu, X, Globe, Edit2 } from "lucide-react";
+import { LayoutDashboard, Users, ScanLine, BarChart3, Play, CheckCircle, LogOut, ChevronUp, Menu, X, Edit2, Wand2 } from "lucide-react";
 import { useAuth } from "../../auth/context/AuthContext";
 import Logo from "../../shared/components/Logo";
 import pfpExample from "../../../assets/pfpExample.png";
@@ -55,6 +55,7 @@ const EventSideBar = ({
     <>
       <NavLink icon={LayoutDashboard} label="Overview"         active={activeItem === "Overview"}   onClick={() => { navigate(`/events/${id}`); setMobileOpen(false); }} />
       <NavLink icon={Users}           label="Manage Attendees" active={activeItem === "Attendees"}  onClick={() => { navigate(`/dashboard/${id}`); setMobileOpen(false); }} />
+      <NavLink icon={Wand2}           label="Creator Suite"    active={activeItem === "Suite"}      onClick={() => { navigate(`/events/${id}/suite`); setMobileOpen(false); }} />
       {isEditable && (
         <NavLink icon={Edit2} label="Edit Event" active={activeItem === "Edit"} onClick={() => { navigate(`/events/${id}/edit`); setMobileOpen(false); }} />
       )}
@@ -102,9 +103,6 @@ const EventSideBar = ({
               )}
             </div>
           )}
-          <div className="mt-3 pt-3 border-t border-LineBox">
-            <NavLink icon={Globe} label="Explore Events" active={activeItem === "Explore"} onClick={() => { navigate("/"); setMobileOpen(false); }} />
-          </div>
           <div className="mt-2 pt-2 border-t border-LineBox">
             <button onClick={handleLogout} className="flex items-center gap-2.5 w-full px-3 py-2 text-sm text-MainOffWhiteText hover:text-MainRed transition-colors">
               <LogOut size={13} />Logout
@@ -147,10 +145,6 @@ const EventSideBar = ({
               )}
             </div>
           )}
-          <div className="mt-4 pt-4 border-t border-LineBox">
-            <h4 className="text-[10px] text-SecondOffWhiteText font-jakarta font-bold px-3 mb-2">DISCOVER</h4>
-            <NavLink icon={Globe} label="Explore Events" active={activeItem === "Explore"} onClick={() => navigate("/")} />
-          </div>
         </nav>
 
         <div className="relative border-t border-LineBox">

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export const useWaitlist = (id, status = "WAITLISTED") => {
+export const useWaitlist = (id, status = "ATTENDING") => {
   const [rsvpInvitations, setRsvpInvitations] = useState([]);
   const [eventInfo, setEventInfo] = useState();
   const [attendingCount, setAttendingCount] = useState(0);
@@ -80,7 +80,9 @@ export const useWaitlist = (id, status = "WAITLISTED") => {
   const handleMoveToConfirmed = async (selectedGuests, onSuccess) => {
     if (!selectedGuests?.length) return;
     try {
-      const movedGuests = rsvpInvitations.filter((u) => selectedGuests.includes(u._id));
+      const movedGuests = rsvpInvitations.filter((u) =>
+        selectedGuests.includes(u._id),
+      );
       await axios.patch(
         `${import.meta.env.VITE_API_URL}/api/rsvp/bulk-update`,
         { rsvpIds: selectedGuests, status: "ATTENDING" },
