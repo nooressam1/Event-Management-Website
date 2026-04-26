@@ -1,40 +1,28 @@
-import React from "react";
 import pfp from "../../../assets/pfp.png";
-import { Trash } from "lucide-react";
-import CustomButton from "../../shared/component/CustomButton";
+import CustomButton from "../../shared/components/CustomButton";
 
-const checkInBoxGuest = ({
-  name,
-  id,
-  email,
-  image,
-  joinedTime,
-  positionNum,
-  onDelete,
-  status,
-  onCheckIn,
-}) => {
+const CheckInBoxGuest = ({ name, id, status, onCheckIn, disabled }) => {
   return (
     <div
       className={`flex mb-3 flex-col sm:flex-row w-full justify-between sm:items-center rounded-lg border-2 py-4 px-5 gap-3 sm:gap-5 transition-all
-  ${status ? "bg-MainBlueBackground/50 border-LineBox/50 opacity-60" : "bg-MainBlueBackground border-LineBox"}`}
+        ${status ? "bg-MainBlueBackground/50 border-LineBox/50 opacity-60" : "bg-MainBlueBackground border-LineBox"}`}
     >
       {/* Left side */}
       <div className="flex flex-row gap-3 sm:gap-5 items-center min-w-0">
         <div className="flex w-10 h-10 sm:w-12 sm:h-12 rounded-sm shrink-0">
           <img
-            src={image || pfp}
+            src={pfp}
             className={`h-full w-full object-contain ${status ? "grayscale" : ""}`}
           />
         </div>
         <div className="flex flex-col min-w-0">
           <h1
             className={`font-inter capitalize font-semibold text-sm sm:text-md truncate
-        ${status ? "text-MainOffWhiteText line-through" : "text-white"}`}
+              ${status ? "text-MainOffWhiteText line-through" : "text-white"}`}
           >
             {name}
           </h1>
-          <h1 className="text-MainOffWhiteText font-inter capitalize font-medium text-xs truncate">
+          <h1 className="text-SecondOffWhiteText font-inter font-medium text-xs truncate">
             ID #{id}
           </h1>
         </div>
@@ -55,14 +43,16 @@ const checkInBoxGuest = ({
         </div>
         <CustomButton
           type="button"
-          title={status ? "Undo" : "Check In"}
+          title={disabled ? "..." : status ? "Undo" : "Check In"}
           onClick={onCheckIn}
-          className={`px-8 py-4 text-sm text-white rounded-lg w-32
-    ${status ? "bg-MainOffWhiteText/30" : "bg-MainBlue"}`}
+          disabled={disabled}
+          className={`px-4 py-3 min-h-[44px] min-w-[88px] text-sm text-white rounded-lg transition-opacity
+            ${disabled ? "opacity-40 cursor-not-allowed" : ""}
+            ${status ? "bg-MainOffWhiteText/30" : "bg-MainBlue"}`}
         />
       </div>
     </div>
   );
 };
 
-export default checkInBoxGuest;
+export default CheckInBoxGuest;

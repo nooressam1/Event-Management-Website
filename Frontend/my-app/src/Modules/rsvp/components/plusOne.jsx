@@ -3,7 +3,7 @@ import React from "react";
 
 const PlusOne = ({ value, onChange }) => {
   return (
-    <div className="w-full flex border-LineBox border-2 px-4 py-2 items-center rounded-xl flex-row justify-between max-w-md font-inter group">
+    <div className="w-full flex border-LineBox border-2 px-4 py-2 items-center rounded-xl flex-row justify-between font-inter group">
       <div className="flex flex-row  justify-center items-end">
         <div className="flex justify-center items-center bg-MainBlueBackground p-2 rounded-md">
           <UserPlus

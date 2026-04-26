@@ -11,7 +11,7 @@ const StatCard = ({
   height,
 }) => {
   const selectedColor = color.toLowerCase();
-  const theme = ColorMap[selectedColor] || colorMap.green;
+  const theme = ColorMap[selectedColor] || ColorMap.green;
 
   // Logic: If not adaptive, use provided width/height. Else, use h-full/w-full.
   const dynamicStyle = !isAdaptive

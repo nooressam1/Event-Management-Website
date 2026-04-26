@@ -2,10 +2,10 @@ import { ArrowRight, Lock, Mail, User } from "lucide-react";
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import LabeledInput from "../../shared/component/LabeledInput";
-import CustomButton from "../../shared/component/CustomButton";
+import LabeledInput from "../../shared/components/LabeledInput";
+import CustomButton from "../../shared/components/CustomButton";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../utils/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext";
 const signUpSchema = Yup.object({
   username: Yup.string()
     .min(3, "Username must be at least 3 characters")

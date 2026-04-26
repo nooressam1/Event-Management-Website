@@ -1,13 +1,13 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import SideNavigationBar from "../../shared/component/SideNavigationBar";
-import Footer from "../../shared/component/Footer";
+import SideNavigationBar from "../../shared/components/SideNavigationBar";
+import Footer from "../../shared/components/Footer";
 import StepIndicator from "../components/wizard/StepIndicator";
 import Step1EventDetails from "../components/wizard/Step1EventDetails";
 import Step2CapacityLogic from "../components/wizard/Step2CapacityLogic";
 import Step3InviteGuests from "../components/wizard/Step3InviteGuests";
-import CustomButton from "../../shared/component/CustomButton";
+import CustomButton from "../../shared/components/CustomButton";
 import useCreateEvent from "../hooks/useCreateEvent";
 
 const STEP_CONTENT = {

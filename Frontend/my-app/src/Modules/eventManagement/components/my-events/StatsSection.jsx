@@ -28,7 +28,7 @@ const SkeletonCard = () => (
 const StatsSection = ({ stats, loading }) => {
   if (loading) {
     return (
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-4">
         <SkeletonCard />
         <SkeletonCard />
         <SkeletonCard />

@@ -1,4 +1,4 @@
-// src/Modules/auth/utils/AuthContext.jsx
+// src/Modules/auth/context/AuthContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 

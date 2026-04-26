@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Calendar, Clock, MapPin, Users } from "lucide-react";
-import CustomButton from "../../shared/component/CustomButton";
+import CustomButton from "../../shared/components/CustomButton";
 import EventPhoto from "../../../assets/eventphoto.jpg";
 
 const PublicEventCard = ({ event }) => {

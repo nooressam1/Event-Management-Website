@@ -26,7 +26,7 @@ const GuestViewPreview = ({ formData }) => {
     : "Date & Time TBD";
 
   return (
-    <div className="w-72 shrink-0">
+    <div className="hidden lg:block w-72 shrink-0">
       {/* Header */}
       <div className="flex items-center gap-2 mb-3">
         <Eye size={14} className="text-MainBlue" />

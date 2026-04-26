@@ -1,6 +1,6 @@
 import "./App.css";
 import { Route, Routes, Outlet, useNavigate } from "react-router-dom";
-import AuthTemp from "./Modules/auth/pages/AuthTemp";
+import AuthPage from "./Modules/auth/pages/AuthPage";
 import InvitationPage from "./Modules/rsvp/pages/invitationPage";
 import PublicEventPage from "./Modules/rsvp/pages/PublicEventPage";
 import MyEvents from "./Modules/eventManagement/pages/MyEvents";
@@ -10,11 +10,11 @@ import CheckInPage from "./Modules/checkin/pages/checkInPage.jsx";
 import ManageWaitlist from "./Modules/invitations/pages/manageAttendees";
 import Homepage from "./Modules/Event_Creator_Suite_Service/pages/Homepage";
 import EventAnalytics from "./Modules/analytics/pages/EventAnalytics";
-import SideNavigationBar from "./Modules/shared/component/SideNavigationBar";
-import Footer from "./Modules/shared/component/Footer";
-import CustomButton from "./Modules/shared/component/CustomButton";
+import SideNavigationBar from "./Modules/shared/components/SideNavigationBar";
+import Footer from "./Modules/shared/components/Footer";
+import CustomButton from "./Modules/shared/components/CustomButton";
 import EventHubIcon from "../src/assets/EventHubIcon.png";
-import { useAuth } from "./Modules/auth/utils/AuthContext";
+import { useAuth } from "./Modules/auth/context/AuthContext";
 
 // Guest layout — header adjusts based on auth state
 const GuestLayout = () => {
@@ -85,8 +85,8 @@ function App() {
     <Routes>
       <Route>
         {" "}
-        <Route path="/login" element={<AuthTemp />} />
-        <Route path="/signup" element={<AuthTemp />} />
+        <Route path="/login" element={<AuthPage />} />
+        <Route path="/signup" element={<AuthPage />} />
       </Route>
       <Route element={<GuestLayout />}>
         <Route path="/" element={<Homepage />} />

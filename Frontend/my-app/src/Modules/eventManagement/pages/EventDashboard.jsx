@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Footer from "../../shared/component/Footer";
+import Footer from "../../shared/components/Footer";
 import EventSideBar from "../../Event_Creator_Suite_Service/components/EventSideBar";
 import EventHeader from "../components/event-dashboard/EventHeader";
 import DeleteConfirm from "../components/event-dashboard/DeleteConfirm";

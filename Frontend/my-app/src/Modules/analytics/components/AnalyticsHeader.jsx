@@ -20,7 +20,7 @@ const AnalyticsHeader = ({ event, onBack, onExport, onShare, shareToast }) => {
         Back to Event
       </button>
 
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
         <div className="min-w-0">
           <p className="text-MainBlue text-xs font-jakarta font-bold uppercase tracking-widest mb-2">
             Past Event · Analytics
@@ -47,7 +47,7 @@ const AnalyticsHeader = ({ event, onBack, onExport, onShare, shareToast }) => {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
           <button
             onClick={onExport}
             className="flex items-center gap-2 px-4 py-2 bg-MainBackground border border-LineBox hover:border-MainBlue/50 text-MainOffWhiteText hover:text-white rounded-lg text-sm transition-colors"

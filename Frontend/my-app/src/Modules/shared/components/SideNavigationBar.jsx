@@ -4,7 +4,7 @@ import Logo from "./Logo";
 import MyEventIcon from "../../../assets/MyEventIcon.png";
 import pfpExample from "../../../assets/pfpExample.png";
 import SideBarBox from "./SideBarBox";
-import { useAuth } from "../../auth/utils/AuthContext";
+import { useAuth } from "../../auth/context/AuthContext";
 import { Globe, Menu, X, LogOut, ChevronUp } from "lucide-react";
 
 const NAV_ITEMS = [

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import EventSideBar from "../../Event_Creator_Suite_Service/components/EventSideBar";
-import Footer from "../../shared/component/Footer";
+import Footer from "../../shared/components/Footer";
 import AnalyticsHeader from "../components/AnalyticsHeader";
 import AnalyticsSummaryCards from "../components/AnalyticsSummaryCards";
 import AttendanceDonut from "../components/AttendanceDonut";
@@ -39,7 +39,7 @@ const EventAnalytics = () => {
         <div className="flex-1 flex flex-col overflow-hidden">
           <main className="flex-1 overflow-y-auto p-8 space-y-4">
             <div className="h-24 bg-NavigationBackground border border-LineBox rounded-2xl animate-pulse" />
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[1, 2, 3, 4].map((i) => (
                 <div
                   key={i}

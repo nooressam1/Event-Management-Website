@@ -1,6 +1,6 @@
 import { Calendar, Clock, PartyPopper, UserPen } from "lucide-react";
 import React from "react";
-import CustomButton from "../../shared/component/CustomButton";
+import CustomButton from "../../shared/components/CustomButton";
 import EventDetails from "./EventDetails";
 
 const SubmittedResponse = ({ invitationData,onUpdateClick }) => {
@@ -62,7 +62,7 @@ const SubmittedResponse = ({ invitationData,onUpdateClick }) => {
 
   return (
     <div className="w-full flex flex-col lg:flex-row gap-6 justify-center items-stretch bg-MainBackground px-4 sm:px-6 lg:px-10 py-10">
-      
+
       {/* Left - Status Card */}
       <div
         style={{
@@ -89,7 +89,7 @@ const SubmittedResponse = ({ invitationData,onUpdateClick }) => {
 
       {/* Right - Event Summary */}
       <div className="bg-NavigationBackground flex flex-col gap-6 border-LineBox border-2 rounded-3xl px-6 sm:px-8 py-10 w-full lg:w-[580px] shrink-0">
-        
+
         {/* Header */}
         <div className="flex flex-row justify-between items-start sm:items-center gap-4">
           <div className="flex flex-col gap-1">

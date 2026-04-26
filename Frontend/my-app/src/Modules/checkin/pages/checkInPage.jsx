@@ -3,10 +3,10 @@ import { useParams } from "react-router-dom";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import useCheckIn from "../../Event_Creator_Suite_Service/hooks/useCheckIn";
 import EventSideBar from "../../Event_Creator_Suite_Service/components/EventSideBar";
-import Footer from "../../shared/component/Footer";
-import SearchBar from "../../shared/component/SearchBar";
-import CheckInBoxGuest from "../component/checkInBoxGuest";
-import LivePulse from "../component/livePulse";
+import Footer from "../../shared/components/Footer";
+import SearchBar from "../../shared/components/SearchBar";
+import CheckInBoxGuest from "../components/checkInBoxGuest";
+import LivePulse from "../components/livePulse";
 
 const FILTERS = [
   { value: "all", label: "All" },
@@ -59,7 +59,7 @@ const CheckInPage = () => {
       <EventSideBar event={event} activeItem="Check-In" />
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <main className="flex-1 overflow-y-auto p-8">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-8">
           <div className="flex flex-col md:flex-row h-full gap-6">
 
             {/* Left — attendee list */}
