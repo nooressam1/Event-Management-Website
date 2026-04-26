@@ -4,7 +4,8 @@ import {
   getRSVPbyStatus,
   bulkUpdateStatus,
   deleteRsvp,
-  rsvpCheckedInUsers,
+  getRsvpCheckedInUsers,
+  checkInUser
 } from "../controllers/rsvpController.js";
 
 import { protect } from "../middleware/authMiddleware.js";
@@ -12,7 +13,8 @@ import { protect } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 router.use(protect);
-router.get("/:id/checkedIn", rsvpCheckedInUsers);
+router.get("/:id/checkUser", getRSVPbyStatus);
+router.get("/:id/checkedIn", checkInUser);
 router.get("/:id/:status", getRSVPbyStatus);
 
 router.get("/:id", getRsvp);

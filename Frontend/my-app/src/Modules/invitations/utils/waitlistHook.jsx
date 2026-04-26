@@ -92,6 +92,20 @@ export const useWaitlist = (id) => {
       console.log(error);
     }
   };
+  const handleConfirmCheckIn = async (userID, status) => {
+    try {
+      await axios.patch(
+        `${import.meta.env.VITE_API_URL}/api/rsvp/:id/checkUser`,
+        { rsvpId: userID, checkin: status },
+        { withCredentials: true },
+      );
+
+      await fetchGuests();
+      await fetchAttending();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const addActivity = (name, type) => {
     setRecentActivity((prev) =>
       [{ name, type, time: new Date() }, ...prev].slice(0, 5),
@@ -119,5 +133,6 @@ export const useWaitlist = (id) => {
     fetchGuests,
     handleDelete,
     handleMoveToConfirmed,
+    handleConfirmCheckIn,
   };
 };

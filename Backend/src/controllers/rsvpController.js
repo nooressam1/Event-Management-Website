@@ -55,7 +55,7 @@ export const getRSVPbyStatus = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-export const rsvpCheckedInUsers = async (req, res) => {
+export const getRsvpCheckedInUsers = async (req, res) => {
   const { id } = req.params;
   console.log("testing rsvp2");
   console.log("testing rsvp2");
@@ -69,6 +69,24 @@ export const rsvpCheckedInUsers = async (req, res) => {
     res.status(200).json({ rsvps });
   } catch (err) {
     console.error("RSVP fetch error:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
+export const checkInUser = async (req, res) => {
+  const { rsvpId, checkin } = req.body;
+
+  try {
+    const rsvp = await RSVP.findByIdAndUpdate(
+      rsvpId,
+      { $set: { checkedIn: checkin } },
+      { new: true },
+    );
+
+    if (!rsvp) return res.status(404).json({ message: "RSVP not found" });
+
+    res.status(200).json({ rsvp });
+  } catch (err) {
+    console.error("RSVP check-in error:", err);
     res.status(500).json({ message: err.message });
   }
 };
