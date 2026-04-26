@@ -32,6 +32,7 @@ const checkInPage = () => {
     isLoading,
     recentActivity,
     handleMoveToConfirmed,
+    handleConfirmCheckIn,
     handleDelete,
   } = useWaitlist(id);
 
@@ -40,13 +41,20 @@ const checkInPage = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
-const [statusFilter, setStatusFilter] = useState("all"); // "all" | "checkedIn" | "pending"
+  const [statusFilter, setStatusFilter] = useState("all"); // "all" | "checkedin" | "pending"
+
   const filteredGuests = attending.filter((user) => {
     const query = searchQuery.toLowerCase();
-    return (
+    const matchesSearch =
       user.guestName?.toLowerCase().includes(query) ||
-      user.guestEmail?.toLowerCase().includes(query)
-    );
+      user.guestEmail?.toLowerCase().includes(query);
+
+    const matchesStatus =
+      statusFilter === "all" ||
+      (statusFilter === "checkedin" && user.checkedIn) ||
+      (statusFilter === "pending" && !user.checkedIn);
+
+    return matchesSearch && matchesStatus;
   });
 
   return (
@@ -75,17 +83,15 @@ const [statusFilter, setStatusFilter] = useState("all"); // "all" | "checkedIn" 
             width="w-full"
             onSearch={(value) => setSearchQuery(value)}
           />
-          <button
-            className=" w-fit gap-2 flex flex-row text-MainOffWhiteText border bg-NavigationBackground border-LineBox rounded-lg px-3 py-[10px] text-sm hover:border-MainBlue hover:text-MainBlue transition-colors"
-            onClick={() => setShowFilters(!showFilters)}
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="shrink-0 px-2 py-[12px] flex  text-sm text-MainOffWhiteText rounded-lg border border-LineBox bg-NavigationBackground outline-none cursor-pointer font-inter hover:border-MainBlue transition-colors"
           >
-            <span className="whitespace-nowrap">All Status</span>
-            {showFilters ? (
-              <ChevronUp></ChevronUp>
-            ) : (
-              <ChevronDown></ChevronDown>
-            )}
-          </button>
+            <option value="all">All Status</option>
+            <option value="checkedin">Checked In</option>
+            <option value="pending">Pending</option>
+          </select>
         </div>
         <div className="flex flex-row justify-between items-center p-2">
           <h1 className="text-white font-jakarta font-black text-md">
@@ -120,7 +126,8 @@ const [statusFilter, setStatusFilter] = useState("all"); // "all" | "checkedIn" 
                 positionNum={user.waitlistPosition}
                 status={user.checkedIn}
                 onDelete={() => handleDelete(user._id, user.guestName)}
-                onCheckIn={() => ""}
+                onCheckIn={() => handleConfirmCheckIn(user._id, true)}
+                onUndo={() => handleConfirmCheckIn(user._id, false)}
               />
             ))
           )}

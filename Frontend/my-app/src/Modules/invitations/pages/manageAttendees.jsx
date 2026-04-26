@@ -20,7 +20,7 @@ const timeAgo = (dateStr) => {
 const manageAttendees = () => {
   const { id } = useParams();
   const {
-    rsvpInvitations,
+    rsvpInvitations,       
     eventInfo,
     attendingCount,
     isLoading,

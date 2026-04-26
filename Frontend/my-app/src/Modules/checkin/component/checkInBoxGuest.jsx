@@ -8,11 +8,11 @@ const checkInBoxGuest = ({
   id,
   email,
   image,
-  joinedTime,
   positionNum,
   onDelete,
   status,
   onCheckIn,
+  onUndo,
 }) => {
   return (
     <div
