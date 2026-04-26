@@ -90,14 +90,14 @@ const rsvpSchema = new mongoose.Schema(
 );
 
 // adds rule: One RSVP per guest email per event
-rsvpSchema.index({ event: 1, guestEmail: 1 }, { unique: true });
+rsvpSchema.index({ eventId: 1, guestEmail: 1 }, { unique: true });
 
 // For filtering/searching guests within an event, purely performance
-rsvpSchema.index({ event: 1, status: 1 }); //order ascendeningly event and their status
-rsvpSchema.index({ event: 1, guestName: "text", guestEmail: "text" });
+rsvpSchema.index({ eventId: 1, status: 1 });
+rsvpSchema.index({ eventId: 1, guestName: "text", guestEmail: "text" });
 
 // For waitlist ordering, when we grap waitlist we usually want the top 10 or so
-rsvpSchema.index({ event: 1, waitlistPosition: 1 });
+rsvpSchema.index({ eventId: 1, waitlistPosition: 1 });
 
 // Update lastModifiedAt on every save
 rsvpSchema.pre("save", async function () {

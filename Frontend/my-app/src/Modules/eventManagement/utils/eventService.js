@@ -36,3 +36,9 @@ export const revokeInvite = (id) =>
   axios
     .post(`${API}/api/events/${id}/revoke-invite`, {}, cfg)
     .then((r) => r.data);
+
+export const updateRsvpStatus = (rsvpId, status) =>
+  axios.patch(`${API}/api/rsvp/${rsvpId}/status`, { status }, cfg).then((r) => r.data);
+
+export const removeRsvp = (rsvpId) =>
+  axios.delete(`${API}/api/rsvp/delete/${rsvpId}`, cfg).then((r) => r.data);

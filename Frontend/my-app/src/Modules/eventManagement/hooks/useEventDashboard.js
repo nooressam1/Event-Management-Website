@@ -8,6 +8,8 @@ import {
   deleteEvent,
   revokeInvite,
   getExportUrl,
+  updateRsvpStatus,
+  removeRsvp,
 } from "../utils/eventService";
 
 const PAGE_SIZE = 10;
@@ -123,6 +125,21 @@ const useEventDashboard = (eventId) => {
     }
   };
 
+  const handleApproveRsvp = async (rsvpId) => {
+    await updateRsvpStatus(rsvpId, "ATTENDING").catch(() => {});
+    fetchAttendees();
+  };
+
+  const handleDeclineRsvp = async (rsvpId) => {
+    await updateRsvpStatus(rsvpId, "DECLINED").catch(() => {});
+    fetchAttendees();
+  };
+
+  const handleRemoveRsvp = async (rsvpId) => {
+    await removeRsvp(rsvpId).catch(() => {});
+    fetchAttendees();
+  };
+
   const handleSearchChange = (val) => {
     setSearch(val);
     setCurrentPage(1);
@@ -156,6 +173,9 @@ const useEventDashboard = (eventId) => {
     handleDeleteEvent,
     handleExport,
     handleEditEvent,
+    handleApproveRsvp,
+    handleDeclineRsvp,
+    handleRemoveRsvp,
   };
 };
 

@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SideNavigationBar from "../../shared/component/SideNavigationBar";
-import Footer from "../../shared/component/Footer";
+import SideNavigationBar from "../../shared/components/SideNavigationBar";
+import Footer from "../../shared/components/Footer";
 import EventCard from "../components/my-events/EventCard";
 import AddEventCard from "../components/my-events/AddEventCard";
 import StatsSection from "../components/my-events/StatsSection";
 import EventTabs, { TAB_TO_STATUS } from "../components/my-events/EventTabs";
 import EventFilters from "../components/my-events/EventFilters";
 import useMyEvents from "../hooks/useMyEvents";
-import CustomButton from "../../shared/component/CustomButton";
+import CustomButton from "../../shared/components/CustomButton";
 import { Plus } from "lucide-react";
 
 const MyEvents = () => {

@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Calendar, Clock } from "lucide-react";
+import EventPhoto from "../../../../assets/eventphoto.jpg";
 
 // Maps DB enum values → display label + badge style
 const STATUS_MAP = {
@@ -14,7 +15,7 @@ const STATUS_MAP = {
   },
   COMPLETED: {
     label: "PAST",
-    style: "bg-gray-800 text-MainOffWhiteText",
+    style: "bg-LineBox text-MainOffWhiteText",
   },
   CANCELLED: {
     label: "CANCELLED",
@@ -50,7 +51,7 @@ const EventCard = ({ event }) => {
       {/* Image */}
       <div className="relative h-44 w-full">
         <img
-          src={coverImage}
+          src={coverImage || EventPhoto}
           alt={title}
           className="w-full h-full object-cover"
         />

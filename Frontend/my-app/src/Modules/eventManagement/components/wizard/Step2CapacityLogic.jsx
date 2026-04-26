@@ -1,5 +1,5 @@
 import React from "react";
-import { Users, Timer, UserPlus, SlidersHorizontal, ClipboardList } from "lucide-react";
+import { Users, Timer, UserPlus, Globe, SlidersHorizontal, ClipboardList } from "lucide-react";
 import SectionCard from "../primitives/SectionCard";
 import RuleRow from "../primitives/RuleRow";
 import Toggle from "../primitives/Toggle";
@@ -40,6 +40,17 @@ const Step2CapacityLogic = ({ formData, updateField }) => (
           <Checkbox
             checked={formData.allowPlusOnes}
             onChange={(v) => updateField("allowPlusOnes", v)}
+          />
+        }
+      />
+      <RuleRow
+        icon={Globe}
+        title="Public Event"
+        subtitle="Appear on the public homepage — anyone can discover and join"
+        control={
+          <Toggle
+            checked={formData.isPublic}
+            onChange={(v) => updateField("isPublic", v)}
           />
         }
       />

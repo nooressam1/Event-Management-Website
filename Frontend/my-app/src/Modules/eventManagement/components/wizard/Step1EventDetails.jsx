@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { Calendar, Clock, MapPin, ArrowLeft } from "lucide-react";
 import GuestViewPreview from "./GuestViewPreview";
 import FieldLabel from "../primitives/FieldLabel";
-import LabeledInput from "../../../shared/component/LabeledInput";
+import LabeledInput from "../../../shared/components/LabeledInput";
 
 const MapPlaceholder = ({ location }) => (
-  <div className="mt-3 h-44 bg-[#080D18] rounded-xl border border-LineBox overflow-hidden relative">
+  <div className="mt-3 h-44 bg-MainBackground rounded-xl border border-LineBox overflow-hidden relative">
     <svg
       className="absolute inset-0 w-full h-full opacity-[0.07]"
       xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +78,7 @@ const Step1EventDetails = ({ formData, updateField }) => {
       Back to My Events
     </button>
 
-    <div className="flex gap-8">
+    <div className="flex flex-col lg:flex-row gap-8">
     <div className="flex-1 space-y-6 min-w-0">
       <LabeledInput
         label="Event Name"

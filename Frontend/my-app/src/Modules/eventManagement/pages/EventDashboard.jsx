@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
-import SideNavigationBar from "../../shared/component/SideNavigationBar";
-import Footer from "../../shared/component/Footer";
+import Footer from "../../shared/components/Footer";
+import EventSideBar from "../../Event_Creator_Suite_Service/components/EventSideBar";
 import EventHeader from "../components/event-dashboard/EventHeader";
 import DeleteConfirm from "../components/event-dashboard/DeleteConfirm";
 import DashboardStatCards from "../components/event-dashboard/DashboardStatCards";
 import AttendeeTable from "../components/event-dashboard/AttendeeTable";
-import BottomActions from "../components/event-dashboard/BottomActions";
 import useEventDashboard from "../hooks/useEventDashboard";
 
 const EventDashboard = () => {
@@ -38,12 +36,15 @@ const EventDashboard = () => {
     handleDeleteEvent,
     handleExport,
     handleEditEvent,
+    handleApproveRsvp,
+    handleDeclineRsvp,
+    handleRemoveRsvp,
   } = useEventDashboard(id);
 
   if (loading) {
     return (
       <div className="flex h-screen bg-MainBackground font-inter">
-        <SideNavigationBar activeItem="My Events" />
+        <EventSideBar event={null} />
         <div className="flex-1 flex items-center justify-center">
           <p className="text-SecondOffWhiteText text-sm">Loading event...</p>
         </div>
@@ -54,7 +55,7 @@ const EventDashboard = () => {
   if (error || !event) {
     return (
       <div className="flex h-screen bg-MainBackground font-inter">
-        <SideNavigationBar activeItem="My Events" />
+        <EventSideBar event={null} />
         <div className="flex-1 flex items-center justify-center">
           <p className="text-MainRed text-sm">{error ?? "Event not found."}</p>
         </div>
@@ -62,23 +63,19 @@ const EventDashboard = () => {
     );
   }
 
-  const isDraft = event.status === "DRAFT";
-  const isLive = event.status === "PUBLISHED";
-
   return (
     <div className="flex h-screen overflow-hidden bg-MainBackground font-inter">
-      <SideNavigationBar activeItem="My Events" />
+      <EventSideBar
+        event={event}
+        activeItem="Overview"
+        starting={starting}
+        settingStatus={settingStatus}
+        onStartEvent={handleStartEvent}
+        onSetStatus={handleSetStatus}
+      />
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <main className="flex-1 overflow-y-auto p-8">
-          <button
-            onClick={() => navigate("/myevents")}
-            className="flex items-center gap-2 text-SecondOffWhiteText hover:text-white text-sm mb-6 transition-colors"
-          >
-            <ArrowLeft size={15} />
-            Back to My Events
-          </button>
-
           {showDeleteConfirm && (
             <DeleteConfirm
               onConfirm={handleDeleteEvent}
@@ -110,15 +107,9 @@ const EventDashboard = () => {
             onStatusFilterChange={handleStatusFilterChange}
             onPageChange={setCurrentPage}
             onExport={handleExport}
-          />
-
-          <BottomActions
-            isDraft={isDraft}
-            isLive={isLive}
-            starting={starting}
-            settingStatus={settingStatus}
-            onStartEvent={handleStartEvent}
-            onSetStatus={handleSetStatus}
+            onApprove={handleApproveRsvp}
+            onDecline={handleDeclineRsvp}
+            onRemove={handleRemoveRsvp}
           />
         </main>
 

@@ -49,12 +49,12 @@ const AttendeeTable = ({
   return (
     <div className="bg-NavigationBackground border border-LineBox rounded-2xl overflow-hidden">
       {/* Table header / controls */}
-      <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-LineBox">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-5 py-4 border-b border-LineBox">
         <h2 className="text-white font-jakarta font-semibold text-base shrink-0">
           Attendee List
         </h2>
 
-        <div className="flex items-center gap-2 flex-1 max-w-lg">
+        <div className="flex items-center gap-2 flex-1 max-w-lg w-full sm:w-auto">
           {/* Search */}
           <div className="relative flex-1">
             <Search
@@ -100,7 +100,7 @@ const AttendeeTable = ({
       </div>
 
       {/* Table */}
-      <div className="overflow-x-hidden">
+      <div className="overflow-x-auto">
         <table className="w-full table-fixed">
           <colgroup>
             <col style={{ width: "36%" }} />

@@ -43,7 +43,7 @@ const EventHeader = ({ event, revoking, settingStatus, onEdit, onRevokeInvite, o
         </div>
       )}
 
-      <div className="px-6 py-5 flex items-start justify-between gap-4">
+      <div className="px-6 py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         {/* Left: meta */}
         <div className="min-w-0">
           <div className="flex items-center gap-2 mb-2">
@@ -64,17 +64,17 @@ const EventHeader = ({ event, revoking, settingStatus, onEdit, onRevokeInvite, o
               <Calendar size={13} className="text-MainBlue shrink-0" />
               <span>{formattedDate} · {formattedTime}</span>
             </div>
-            {event.location && (
+            {event.location?.address && (
               <div className="flex items-center gap-1.5">
                 <MapPin size={13} className="text-MainBlue shrink-0" />
-                <span>{event.location}</span>
+                <span>{event.location.address}</span>
               </div>
             )}
           </div>
         </div>
 
         {/* Right: actions */}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={onEdit}
             className="flex items-center gap-2 px-4 py-2 bg-MainBackground border border-LineBox hover:border-MainBlue/50 text-MainOffWhiteText hover:text-white rounded-lg text-sm transition-colors"

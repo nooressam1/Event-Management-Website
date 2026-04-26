@@ -13,6 +13,7 @@ const INITIAL_FORM = {
   capacity: 100,
   enableWaitlist: false,
   allowPlusOnes: false,
+  isPublic: false,
   rsvpQuestions: [],
 };
 
@@ -31,10 +32,11 @@ const buildPayload = (formData, status) => {
     coverImage: formData.coverImage,
     date,
     time: formData.time,
-    location: formData.location,
+    location: { address: formData.location },
     capacity: Number(formData.capacity),
     enableWaitlist: formData.enableWaitlist,
     allowPlusOnes: formData.allowPlusOnes,
+    isPublic: formData.isPublic,
     rsvpQuestions: formData.rsvpQuestions,
     status,
   };
@@ -71,13 +73,14 @@ const useCreateEvent = (editEventId = null) => {
           title: e.title ?? "",
           date: dateStr,
           time: timeStr,
-          location: e.location ?? "",
+          location: e.location?.address ?? "",
           shortDescription: e.shortDescription ?? "",
           description: e.description ?? "",
           coverImage: e.coverImage ?? "",
           capacity: e.capacity ?? 100,
           enableWaitlist: e.enableWaitlist ?? false,
           allowPlusOnes: e.allowPlusOnes ?? false,
+          isPublic: e.isPublic ?? false,
           rsvpQuestions: e.rsvpQuestions ?? [],
         });
         setCreatedEvent(e);
