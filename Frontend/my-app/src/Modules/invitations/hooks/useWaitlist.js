@@ -57,7 +57,9 @@ export const useWaitlist = (id, status = "ATTENDING") => {
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/rsvp/${id}/checkedIn`,
-        { withCredentials: true },
+        {
+          withCredentials: true,
+        },
       );
       setCheckedInCount(response.data.rsvps.length);
     } catch (error) {
